@@ -30,7 +30,7 @@
 ## קישורים לצפייה
 - **Vercel (ציבורי, noindex):** https://medorot-2027.vercel.app
   - **חשבון:** bursteinori-bot.
-  - **עדכון:** מריצים `npx vercel deploy --prod --yes` מתוך התיקייה `site/` (אחרי אישור מפורש של אורי). לא מהתיקייה הישנה `deploy/medorot-2027`: היא סטטית בלבד, ופריסה ממנה מורידה את ה-API ואת טופס ההגשה. פרטים ב-HANDOFF.md.
+  - **עדכון (מ-25.11):** הפרויקט מחובר ל-GitHub, וכל מיזוג ל-`main` במאגר bursteinori-bot/medorot-2027-site עולה לבד לאוויר. לכל ענף אחר נוצרת תצוגה מקדימה. לעולם לא פורסים מהתיקייה הישנה `deploy/medorot-2027`: היא סטטית בלבד, ופריסה ממנה מורידה את ה-API ואת טופס ההגשה. פרטים ב-HANDOFF.md.
 - **claude.ai (פרטי, משתפים מתפריט Share):** https://claude.ai/artifact/YNWNMFtQ5ZPivP1E8KiMt7
 
 ## איך מריצים

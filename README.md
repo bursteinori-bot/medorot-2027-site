@@ -60,7 +60,7 @@
 - **האתר:** React 19, ‏TypeScript, ‏Tailwind CSS ו-Vite, בתיקייה [`site/`](site).
 - **השרת:** פונקציות Serverless ב-Vercel, בתיקייה [`site/api/`](site/api).
 - **מסד הנתונים:** Neon Postgres, באזור פרנקפורט.
-- **אחסון:** Vercel. העלייה לאוויר נעשית מתוך `site/` בפקודה `npx vercel deploy --prod --yes`, ורק אחרי אישור מפורש של אורי.
+- **אחסון:** Vercel, מחובר למאגר הזה. כל מיזוג ל-`main` עולה לבד לאוויר, ולכל ענף או Pull Request נוצרת תצוגה מקדימה.
 
 ## 🚀 הרצה מקומית
 ```bash
