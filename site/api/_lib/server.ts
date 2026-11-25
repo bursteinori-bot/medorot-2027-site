@@ -16,7 +16,9 @@ export function sql(): NeonQueryFunction<false, false> {
 export const json = (body: unknown, status = 200, headers: Record<string, string> = {}) =>
   new Response(status === 204 ? null : JSON.stringify(body), { status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...headers } })
 
-export const fail = (status: number, error: string, fields?: Record<string, string>) => json({ error, fields }, status)
+// `error` stays the Hebrew text it has always been; `extra` carries language-neutral codes (code, fieldCodes, detail)
+// so the browser can show the message in the visitor's language (src/i18n)
+export const fail = (status: number, error: string, fields?: Record<string, string>, extra?: Record<string, unknown>) => json({ error, fields, ...extra }, status)
 
 // a salted hash: enough to rate-limit a sender, impossible to turn back into their IP
 export function ipHash(req: Request) {

@@ -23,3 +23,6 @@ audit/smartobjects/
 
 # local-only security notes (this repository is public)
 HANDOFF.private.md
+
+# local QA screenshots
+audit/i18n/

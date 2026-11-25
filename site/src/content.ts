@@ -8,6 +8,14 @@ export const OPEN_CALL_HEADLINE = 'קוֹל קוֹרֵא: פַּנּוּ דֶּ�
 export const OPEN_CALL_LEAD = 'קוֹל קוֹרֵא:'
 export const OPEN_CALL_PUNCH = 'פַּנּוּ דֶּרֶךְ...'
 
+// Supporting the festival: Kol HaNeshama's hosted iCredit (Rivhit) donation page, opened in a new tab (never framed:
+// Safari drops its session cookie in frames, and Apple Pay / Google Pay / 3DS are unreliable there). The page takes no
+// amount or name from the URL; `Comments` pre-fills its required "תשלום עבור" field. That text stays Hebrew in both
+// site languages because it goes into Kol HaNeshama's accounting.
+export const DONATION_PAGE = 'https://icredit.rivhit.co.il/payment/DonationPage.aspx?GroupId=1ece4871-49de-4692-be5c-491d20565634'
+export const DONATION_COMMENT = 'תמיכה בפסטיבל מדורות 2027'
+export const DONATION_URL = `${DONATION_PAGE}&Comments=${encodeURIComponent(DONATION_COMMENT)}`
+
 // Values the team has not fixed yet. `null` hides the line instead of showing an invented value.
 export const SETTINGS = {
   festivalDate: 'יפורסם בקרוב',
@@ -18,8 +26,8 @@ export const SETTINGS = {
   instagramUrl: 'https://instagram.com/medorott',
   email: null as string | null,
   whatsapp: null as string | null,
-  donationUrl: null as string | null, // hosted checkout, once a provider is chosen
-  paymentsEnabled: false,
+  donationUrl: DONATION_URL as string | null, // hosted payment page (see DONATION_URL)
+  paymentsEnabled: true,
   privacyPolicyUrl: '#privacy',
 }
 
@@ -137,12 +145,12 @@ export const SUPPORT = {
     'מְדּוֹרוֹת נוצר מתוך רצון לפתוח מרחב ליצירה, למפגש ולמחשבה חדשה.',
     'אנחנו מאמינים שאמנות צריכה מרחב לבעור בו, ושיצירה עצמאית זקוקה לאנשים שמאמינים בה.',
     'אנחנו מזמינים אתכם.ן להיות חלק מהפסטיבל ולתמוך ביצירה אמנותית עצמאית בירושלים.',
-    'כל תרומה עוזרת לנו לאפשר לאמנים ויוצרים להציג עבודות חדשות, לפתח רעיונות, ליצור מפגשים ולהדליק עוד ניצוצות של יצירה.',
+    'כל תמיכה בפסטיבל עוזרת לנו לאפשר לאמנים ויוצרים להציג עבודות חדשות, לפתח רעיונות, ליצור מפגשים ולהדליק עוד ניצוצות של יצירה.',
   ],
   closing: 'הצטרפו אלינו והיו שותפים ליצירה.',
   amounts: [36, 72, 180, 360],
-  button: 'לתרומה',
-  notLive: 'התרומות המקוונות עדיין לא פעילות. נעדכן כאן ברגע שיהיו. בינתיים אפשר לפנות אלינו באינסטגרם.',
+  button: 'לתמוך בפסטיבל',
+  notLive: 'התמיכה המקוונת בפסטיבל עדיין לא פעילה. נעדכן כאן ברגע שתיפתח. בינתיים אפשר לפנות אלינו באינסטגרם.',
 }
 
 export const FINAL_CTA = {
@@ -154,9 +162,22 @@ export const CONFIRMATION = {
   title: 'ההצעה שלכם בדרך אלינו!',
   lines: [
     'תודה שהקדשתם זמן וחשבתם איתנו על מְדּוֹרוֹת 2027.',
-    'קיבלנו את ההגשה שלכם.ן ונחזור אליכם.ן בהתאם ללוח הזמנים שיפורסם.',
+    'קיבלנו את ההגשה שלכם.ן, ונחזור אליכם.ן.',
     'בהצלחה, ואולי נתראה סביב המדורה.',
   ],
+}
+
+// The festival's legal and contact details for the privacy policy and the accessibility statement (src/site/Legal.tsx
+// and the legal texts in src/i18n/he.ts / en.ts read them from here). Kept outside the CMS seed on purpose.
+export const LEGAL_DETAILS = {
+  operator: { he: 'קהילת כל הנשמה (ע״ר)', en: 'Kehillat Kol HaNeshama (a registered non-profit)' },
+  amutaNumber: '580111698',
+  address: { he: 'רחוב אשר 1, ירושלים 9347001', en: '1 Asher St., Jerusalem 9347001, Israel' },
+  email: 'programs@kkh.org.il',
+  phone: '054-964-7767',
+  phoneHref: 'tel:+972549647767',
+  accessibilityCoordinator: { he: 'טהר דהאן', en: 'Tahar Dahan' },
+  updated: { privacy: '2026-11-25', accessibility: '2026-11-25' },
 }
 
 export const PRIVACY_DRAFT = true // privacy policy + accessibility statement are drafts until the team approves them

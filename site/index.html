@@ -23,6 +23,19 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&display=swap" rel="stylesheet" />
+    <!-- Site language before the first paint (Hebrew unless ?lang=en or an earlier choice in this browser), so an
+         English page never flashes right-to-left. The same rules live in src/i18n/lang.tsx. -->
+    <script>
+      try {
+        var q = new URLSearchParams(location.search).get('lang'), s = null
+        try { s = localStorage.getItem('medorot-lang') } catch (e) {}
+        var l = q === 'en' || q === 'he' ? q : s
+        if (l === 'en' && !/^\/(concepts|c)(\/|$)/.test(location.pathname)) {
+          document.documentElement.lang = 'en'
+          document.documentElement.dir = 'ltr'
+        }
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

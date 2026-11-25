@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
-import { Navigate, Route, Routes, useParams } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { ContentProvider } from './cms/content'
+import { LangProvider } from './i18n/lang'
 import { ConceptBar } from './shared/ConceptBar'
 import Site from './site/Site'
 
@@ -27,18 +28,26 @@ function Concept() {
   )
 }
 
+// unknown addresses go to the home page, keeping ?lang=en
+function ToHome() {
+  const { search } = useLocation()
+  return <Navigate to={{ pathname: '/', search }} replace />
+}
+
 export default function App() {
   return (
-    <Suspense fallback={<div className="min-h-dvh bg-[#fee801]" />}>
-      <Routes>
-        <Route path="/admin/*" element={<AdminApp />} />
-        <Route path="/concepts" element={<Gallery />} />
-        <Route path="/c/:concept/:section?" element={<Concept />} />
-        <Route path="/privacy" element={<ContentProvider><Site page="privacy" /></ContentProvider>} />
-        <Route path="/accessibility" element={<ContentProvider><Site page="accessibility" /></ContentProvider>} />
-        <Route path="/:section?" element={<ContentProvider><Site /></ContentProvider>} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </Suspense>
+    <LangProvider>
+      <Suspense fallback={<div className="min-h-dvh bg-[#fee801]" />}>
+        <Routes>
+          <Route path="/admin/*" element={<AdminApp />} />
+          <Route path="/concepts" element={<Gallery />} />
+          <Route path="/c/:concept/:section?" element={<Concept />} />
+          <Route path="/privacy" element={<ContentProvider><Site page="privacy" /></ContentProvider>} />
+          <Route path="/accessibility" element={<ContentProvider><Site page="accessibility" /></ContentProvider>} />
+          <Route path="/:section?" element={<ContentProvider><Site /></ContentProvider>} />
+          <Route path="*" element={<ToHome />} />
+        </Routes>
+      </Suspense>
+    </LangProvider>
   )
 }

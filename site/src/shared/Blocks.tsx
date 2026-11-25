@@ -1,21 +1,28 @@
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
-import { FESTIVAL, OPEN_CALL_LEAD, OPEN_CALL_PUNCH, YEAR } from '../content'
+import { YEAR } from '../content'
+import { useT } from '../i18n/lang'
 
 // The open-call headline, always complete: "קוֹל קוֹרֵא:" + "פַּנּוּ דֶּרֶךְ..." (never shortened).
-export function OpenCallHeadline({ as: Tag = 'h1', lead = '', punch = '', className = '', id }: { as?: 'h1' | 'h2'; lead?: string; punch?: string; className?: string; id?: string }) {
+// Default: two stacked lines (lead, then a big punch). `inline`: one line of running text (it may wrap on a narrow
+// phone, never by force), e.g. as the lead-in above the home page's big "מדורות 2027".
+export function OpenCallHeadline({ as: Tag = 'h1', lead = '', punch = '', className = '', id, inline = false }: { as?: 'h1' | 'h2' | 'p'; lead?: string; punch?: string; className?: string; id?: string; inline?: boolean }) {
+  const t = useT().brand
+  const show = inline ? 'inline' : 'block'
   return (
     <Tag id={id} tabIndex={id ? -1 : undefined} className={`nikud outline-none ${className}`}>
-      <span className={`block ${lead}`}>{OPEN_CALL_LEAD}</span>
-      <span className={`block ${punch}`}>{OPEN_CALL_PUNCH}</span>
+      <span className={`${show} ${lead}`}>{t.openCallLead}</span>
+      {inline && ' '}
+      <span className={`${show} ${punch}`}>{t.openCallPunch}</span>
     </Tag>
   )
 }
 
 export function FestivalYear({ className = '', year = '' }: { className?: string; year?: string }) {
+  const t = useT().brand
   return (
     <span className={`nikud ${className}`}>
-      {FESTIVAL} <span className={`tabular-nums ${year}`}>{YEAR}</span>
+      {t.festival} <span className={`tabular-nums ${year}`}>{YEAR}</span>
     </span>
   )
 }

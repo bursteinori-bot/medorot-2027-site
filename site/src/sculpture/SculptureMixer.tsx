@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react'
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { track } from '../analytics'
+import { useT } from '../i18n/lang'
 import { ARRANGEMENTS, fit, swapPart, type Arrangement } from './arrangements'
 import { PART_IDS, PARTS, partSrc, type Placement } from './parts'
 
@@ -28,8 +29,12 @@ function offstage(i: number) {
   return { x: 50 + Math.cos(a) * 85, y: 50 + Math.sin(a) * 85, rot: (i % 2 ? 1 : -1) * 70 }
 }
 
-export function SculptureMixer({ start = 'yellow', value, aspect = 0.8, interactive = true, draggable = false, autoplay = 0, intro = 'assemble', float = true, controls, className = '', style, filter, label = 'פסל מתחבר מחלקי פסלים מקוריים מהפוסטר של הפסטיבל' }: Props) {
+export function SculptureMixer({ start = 'yellow', value, aspect = 0.8, interactive = true, draggable = false, autoplay = 0, intro = 'assemble', float = true, controls, className = '', style, filter, label }: Props) {
   const reduce = useReducedMotion()
+  const t = useT().sculpture
+  // part and arrangement names come from the dictionary (src/i18n); the data files keep the Hebrew as a fallback
+  const partName = (id: string) => (t.parts as Record<string, string>)[id] ?? PARTS[id].label
+  const arrName = (a: Arrangement) => (t.arrangements as Record<string, string>)[a.id] ?? a.name
   const [arr, setArr] = useState<Arrangement>(() => ARRANGEMENTS.find((a) => a.id === start) ?? ARRANGEMENTS[0])
   const [placements, setPlacements] = useState<Placement[]>(arr.placements)
   const [entered, setEntered] = useState(intro === 'none' || !!reduce)
@@ -90,7 +95,7 @@ export function SculptureMixer({ start = 'yellow', value, aspect = 0.8, interact
       <div
         ref={stageRef}
         role="group"
-        aria-label={label}
+        aria-label={label ?? t.label}
         className="relative w-full"
         style={{ aspectRatio: String(aspect) }}
         onPointerDown={() => { touched.current = true; lastTouch.current = Date.now() }}
@@ -112,7 +117,7 @@ export function SculptureMixer({ start = 'yellow', value, aspect = 0.8, interact
               type={interactive ? 'button' : undefined}
               tabIndex={shown && interactive && part.role !== 'figure' ? 0 : -1}
               aria-hidden={!shown}
-              aria-label={interactive ? `החלפת חלק: ${part.label}` : undefined}
+              aria-label={interactive ? t.swap(partName(id)) : undefined}
               onClick={interactive ? () => { touched.current = true; track('sculpture_swap'); setPlacements((cur) => swapPart(cur, id)) } : undefined}
               className={`absolute block p-0 border-0 bg-transparent origin-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current ${interactive && part.role !== 'figure' ? 'cursor-pointer' : ''}`}
               style={{ zIndex: p ? p.z + 1 : 0, pointerEvents: shown ? 'auto' : 'none' }}
@@ -138,8 +143,8 @@ export function SculptureMixer({ start = 'yellow', value, aspect = 0.8, interact
           )
         })}
       </div>
-      <p className="sr-only" aria-live="polite">{arr.name}</p>
-      {controls?.({ shuffle: () => { track('sculpture_shuffle'); shuffle() }, reset, name: arr.name })}
+      <p className="sr-only" aria-live="polite">{arrName(arr)}</p>
+      {controls?.({ shuffle: () => { track('sculpture_shuffle'); shuffle() }, reset, name: arrName(arr) })}
     </div>
   )
 }

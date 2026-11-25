@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useContent } from '../cms/content'
 import { NAV, type SectionId } from '../content'
 
 // Tab navigation over real routes: deep links, back/forward, panel scroll and focus reset.
@@ -33,7 +34,8 @@ export function useSection(base: number | string, { manual = false } = {}) {
     if (!manual) settle()
   }, [active])
 
-  const label = NAV.find((n) => n.id === active)!.label
+  const nav = useContent().nav
+  const label = (nav.find((n) => n.id === active) ?? NAV.find((n) => n.id === active)!).label
   return { active, go, label, settle }
 }
 

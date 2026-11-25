@@ -4,14 +4,20 @@
 //   3. PUT each file to /api/applications/file (one request per file, stored privately)
 //   4. POST /api/applications/complete -> the server checks every file arrived, marks the application submitted and
 //                                        notifies the team. Only its "ok" means the application is saved.
+import { he } from '../i18n/he'
 import { UPLOAD, isShrinkableImage, type Application } from './application'
 
 export type SubmitProgress = { file: number; loaded: number; total: number }
+// `message` is Hebrew (the server's own text, or the browser's from he.ts); `code`, `detail` and `fieldCodes` let the
+// form show the same error in the visitor's language (see `describe` in ApplicationForm).
 export class SubmitError extends Error {
   fields?: Record<string, string>
-  constructor(message: string, fields?: Record<string, string>) {
+  fieldCodes?: Record<string, string>
+  code?: string
+  detail?: string
+  constructor(message: string, opts: { fields?: Record<string, string>; fieldCodes?: Record<string, string>; code?: string; detail?: string } = {}) {
     super(message)
-    this.fields = fields
+    Object.assign(this, opts)
   }
 }
 
@@ -53,10 +59,16 @@ async function post<T>(url: string, body: unknown): Promise<T> {
   try {
     r = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
   } catch {
-    throw new SubmitError('אין חיבור לשרת. בדקו את החיבור לאינטרנט ונסו שוב. מה שכתבתם נשמר בטופס.')
+    throw new SubmitError(he.errors.network, { code: 'network' })
   }
   const data = await r.json().catch(() => ({}))
-  if (!r.ok) throw new SubmitError(data.error ?? 'משהו השתבש בשליחה. נסו שוב בעוד רגע. מה שכתבתם נשמר בטופס.', data.fields)
+  if (!r.ok)
+    throw new SubmitError(data.error ?? he.errors.genericSaved, {
+      fields: data.fields,
+      fieldCodes: data.fieldCodes,
+      code: data.error ? data.code : 'genericSaved',
+      detail: data.detail === undefined ? undefined : String(data.detail),
+    })
   return data as T
 }
 
@@ -69,11 +81,14 @@ function put(url: string, key: string, file: File, onProgress: (loaded: number) 
     x.upload.onprogress = (e) => e.lengthComputable && onProgress(e.loaded)
     x.onload = () => {
       if (x.status >= 200 && x.status < 300) return resolve()
-      let msg = `העלאת הקובץ ${file.name} נכשלה. נסו שוב.`
-      try { msg = JSON.parse(x.responseText).error ?? msg } catch { /* not json */ }
-      reject(new SubmitError(msg))
+      let err = new SubmitError(he.errors.uploadFailed(file.name), { code: 'uploadFailed', detail: file.name })
+      try {
+        const d = JSON.parse(x.responseText)
+        if (d.error) err = new SubmitError(d.error, { code: d.code, detail: d.detail === undefined ? undefined : String(d.detail) })
+      } catch { /* not json */ }
+      reject(err)
     }
-    x.onerror = () => reject(new SubmitError(`העלאת הקובץ ${file.name} נכשלה. בדקו את החיבור ונסו שוב.`))
+    x.onerror = () => reject(new SubmitError(he.errors.uploadNetwork(file.name), { code: 'uploadNetwork', detail: file.name }))
     x.send(file)
   })
 }

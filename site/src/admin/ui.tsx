@@ -1,4 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import { LangToggle } from '../shared/LangToggle'
+import { useAdmin } from './api'
 
 // Small, calm building blocks for the admin area.
 export function Button({ variant = 'primary', className = '', ...p }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' | 'danger' | 'ghost' }) {
@@ -39,4 +41,12 @@ export function Field({ label, hint, children, id }: { label: string; hint?: str
   )
 }
 
-export const Spinner = ({ label = 'טוען…' }: { label?: string }) => <p role="status" className="text-black/60 py-8">{label}</p>
+export function Spinner({ label }: { label?: string }) {
+  const { t } = useAdmin()
+  return <p role="status" className="text-black/60 py-8">{label ?? t.loading}</p>
+}
+
+// the Hebrew / English switch, in the admin's look (black outline, yellow hover, a clear keyboard focus ring)
+export const AdminLangToggle = ({ className = '' }: { className?: string }) => (
+  <LangToggle className={`shrink-0 min-h-10 min-w-11 px-2.5 rounded-md border-2 border-black bg-white text-sm hover:bg-[#fff7c2] focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-[#c42a7d] ${className}`} />
+)

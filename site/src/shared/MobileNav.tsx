@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { useContent } from '../cms/content'
+import { useLang } from '../i18n/lang'
 import type { SectionId } from '../content'
 
 type Props = {
@@ -16,6 +17,8 @@ type Props = {
 // and a "ניווט באתר +" sheet with every section.
 export function MobileNav({ active, onGo, bar = 'bg-[var(--paper)] border-b border-[color:var(--line)]', chip, sheet = 'bg-[var(--paper)]' }: Props) {
   const { nav: NAV, navHint: NAV_HINT } = useContent()
+  const { dir, t } = useLang()
+  const rtl = dir === 'rtl'
   const strip = useRef<HTMLDivElement>(null)
   const [open, setOpen] = useState(false)
   const [more, setMore] = useState(true)
@@ -35,7 +38,7 @@ export function MobileNav({ active, onGo, bar = 'bg-[var(--paper)] border-b bord
   const onScroll = () => {
     const s = strip.current
     if (!s) return
-    // RTL: scrollLeft runs from 0 to negative values
+    // RTL: scrollLeft runs from 0 to negative values (abs() covers both directions)
     setMore(Math.abs(s.scrollLeft) + s.clientWidth < s.scrollWidth - 8)
   }
 
@@ -43,7 +46,7 @@ export function MobileNav({ active, onGo, bar = 'bg-[var(--paper)] border-b bord
 
   return (
     <div className={`md:hidden sticky top-0 z-40 ${bar}`}>
-      <nav aria-label="ניווט ראשי">
+      <nav aria-label={t.site.mainNav}>
         <div className="relative">
           <div ref={strip} onScroll={onScroll} className="no-scrollbar flex gap-2 overflow-x-auto px-4 py-2.5 scroll-px-4">
             {NAV.map((n) => (
@@ -60,15 +63,15 @@ export function MobileNav({ active, onGo, bar = 'bg-[var(--paper)] border-b bord
             ))}
             <span className="shrink-0 w-10" aria-hidden />
           </div>
-          {/* "there's more this way" affordance at the reading end (left in RTL) */}
-          <div aria-hidden className={`pointer-events-none absolute inset-y-0 left-0 w-16 flex items-center justify-start ps-1 transition-opacity ${more ? 'opacity-100' : 'opacity-0'}`} style={{ background: 'linear-gradient(to left, transparent, var(--paper) 70%)' }}>
-            <motion.span className="text-2xl leading-none" animate={{ x: [0, -4, 0] }} transition={{ duration: 1.6, repeat: Infinity }}>‹</motion.span>
+          {/* "there's more this way" affordance at the reading end (left in Hebrew, right in English) */}
+          <div aria-hidden className={`pointer-events-none absolute inset-y-0 end-0 w-16 flex items-center justify-start ps-1 transition-opacity ${more ? 'opacity-100' : 'opacity-0'}`} style={{ background: `linear-gradient(to ${rtl ? 'left' : 'right'}, transparent, var(--paper) 70%)` }}>
+            <motion.span className="text-2xl leading-none" animate={{ x: [0, rtl ? -4 : 4, 0] }} transition={{ duration: 1.6, repeat: Infinity }}>{rtl ? '‹' : '›'}</motion.span>
           </div>
         </div>
         <div className="flex items-center justify-between gap-3 px-4 pb-2 text-[13px]">
           <span className="opacity-75">{NAV_HINT}</span>
           <button type="button" className="shrink-0 underline underline-offset-4 min-h-8" aria-expanded={open} aria-controls="mobile-sheet" onClick={() => setOpen((o) => !o)}>
-            {open ? 'סגירת הניווט ×' : 'ניווט באתר +'}
+            {open ? t.mobileNav.close : t.mobileNav.open}
           </button>
         </div>
       </nav>

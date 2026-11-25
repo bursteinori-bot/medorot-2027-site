@@ -5,9 +5,8 @@ import { MotionConfig } from 'motion/react'
 import './index.css'
 import App from './App.tsx'
 
-// set here as well as in index.html: hosts that wrap the page in their own <html> drop those attributes
-document.documentElement.lang = 'he'
-document.documentElement.dir = 'rtl'
+// <html lang dir> follow the site language: set early by the script in index.html and kept by LangProvider
+// (src/i18n/lang.tsx), which also covers hosts that wrap the page in their own <html> and drop those attributes
 
 // path routes (/about, /apply …); vercel.json rewrites every non-file path to index.html
 createRoot(document.getElementById('root')!).render(

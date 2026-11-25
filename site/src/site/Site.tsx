@@ -2,12 +2,14 @@ import { AnimatePresence, motion } from 'motion/react'
 import { lazy, Suspense, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { enableTracking, track, trackPage } from '../analytics'
-import { useContent } from '../cms/content'
+import { useContent, useSourceContent } from '../cms/content'
 import { img, type SectionId } from '../content'
+import { useLang } from '../i18n/lang'
 import { SculptureMixer } from '../sculpture/SculptureMixer'
 import { FestivalYear, OpenCallHeadline, PanelTitle, Reveal } from '../shared/Blocks'
 import { Donation } from '../shared/Donation'
 import { InfoList, Partners } from '../shared/Info'
+import { LangToggle } from '../shared/LangToggle'
 import { Lightbox } from '../shared/Lightbox'
 import { Logo } from '../shared/Logo'
 import { MobileNav } from '../shared/MobileNav'
@@ -28,29 +30,31 @@ const BOX_COLORS = ['#fee801', '#e13d96', '#fefaee']
 const SCULPTURE_BEAT_MS = 4200
 const VARS = { '--ink': '#0a0a0a', '--paper': '#fee801', '--accent': '#fefaee', '--accent-2': '#e13d96', '--line': '#0a0a0a', '--field': '#fefaee', '--radius': '0px', '--focus': '#e13d96' } as CSSProperties
 
-const DESCRIPTIONS: Partial<Record<SectionId, string>> = {
-  home: 'מְדּוֹרוֹת 2027 – פסטיבל לאמנות עכשווית בירושלים. קוֹל קוֹרֵא: פַּנּוּ דֶּרֶךְ... הגשת הצעות לאמנים.ות, יוצרים.ות וקולקטיבים.',
-  'open-call': 'הקול הקורא של פסטיבל מדורות 2027: מי יכול להגיש, מה אפשר להגיש ובאילו תחומים.',
-  apply: 'הגשת הצעה לפסטיבל מדורות 2027: טופס בארבעה שלבים. גם רעיון בראשית דרכו מוזמן.',
-}
-
-function usePageMeta(title: string, description?: string) {
+// title, description and the Open Graph tags follow the language (link previews read index.html, which stays Hebrew)
+const setMeta = (sel: string, content: string) => document.querySelector(sel)?.setAttribute('content', content)
+function usePageMeta(title: string, description: string | undefined, og: { title: string; description: string; locale: string; imageAlt: string }) {
   useEffect(() => {
     document.title = title
-    if (description) document.querySelector('meta[name="description"]')?.setAttribute('content', description)
-  }, [title, description])
+    if (description) setMeta('meta[name="description"]', description)
+    setMeta('meta[property="og:title"]', og.title)
+    setMeta('meta[property="og:description"]', og.description)
+    setMeta('meta[property="og:locale"]', og.locale)
+    setMeta('meta[property="og:image:alt"]', og.imageAlt)
+  }, [title, description, og.title, og.description, og.locale, og.imageAlt])
 }
 
 export default function Site({ page }: { page?: 'privacy' | 'accessibility' }) {
   const { active, go, label, settle } = useSection('', { manual: true })
   const c = useContent()
+  const { t, withLang } = useLang()
   const [boxColor, setBoxColor] = useState(0)
   const sculpture = ROOM_SCULPTURE[page ? 'details' : active]
   const nextColor = () => setBoxColor((n) => (n + 1) % BOX_COLORS.length)
   const boxBg = { initial: false, animate: { backgroundColor: BOX_COLORS[boxColor] }, transition: { duration: 0.8, ease: [0.4, 0, 0.2, 1] } } as const
   const wide = active === 'apply' || active === 'spaces' || !!page
-  const pageTitle = page === 'privacy' ? 'מדיניות פרטיות' : page === 'accessibility' ? 'הצהרת נגישות' : active === 'home' ? '' : label
-  usePageMeta(`${pageTitle ? pageTitle + ' · ' : ''}פסטיבל מְדּוֹרוֹת 2027`, page ? undefined : DESCRIPTIONS[active] ?? DESCRIPTIONS.home)
+  const pageTitle = page === 'privacy' ? t.site.privacy : page === 'accessibility' ? t.site.accessibility : active === 'home' ? '' : label
+  const m = t.meta
+  usePageMeta(`${pageTitle ? pageTitle + ' · ' : ''}${m.site}`, (page ? undefined : m.descriptions[active]) ?? m.descriptions.home, { title: m.ogTitle, description: m.ogDescription, locale: m.ogLocale, imageAlt: m.ogImageAlt })
   useEffect(() => enableTracking(), [])
   useEffect(() => trackPage(page ?? active), [page, active])
   // a room change recombines the sculpture, so the box takes the next color too (not on the first render)
@@ -63,13 +67,13 @@ export default function Site({ page }: { page?: 'privacy' | 'accessibility' }) {
 
   return (
     <div style={VARS} className="min-h-dvh bg-[var(--paper)] text-[color:var(--ink)]">
-      <a href="#panel-title" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:right-2 focus:z-[200] bg-black text-white px-4 py-2">דילוג לתוכן</a>
+      <a href="#panel-title" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:start-2 focus:z-[200] bg-black text-white px-4 py-2">{t.site.skip}</a>
       {/* desktop header: logo + numbered rooms */}
       <header className="hidden md:flex sticky top-0 z-40 items-stretch border-b-2 border-black bg-[var(--paper)]">
-        <Link to="/" className="px-6 flex items-center border-e-2 border-black" aria-label="מדורות - לעמוד הראשי">
+        <Link to={withLang('/')} className="px-6 flex items-center border-e-2 border-black" aria-label={t.site.homeLink}>
           <Logo className="w-44 lg:w-48" />
         </Link>
-        <nav aria-label="ניווט ראשי" className="flex-1 flex">
+        <nav aria-label={t.site.mainNav} className="flex-1 flex">
           {c.nav.map((n, i) => {
             const on = !page && active === n.id
             return (
@@ -81,16 +85,22 @@ export default function Site({ page }: { page?: 'privacy' | 'accessibility' }) {
                 className={`group relative flex-1 text-start px-3 py-3 border-e border-black/30 last:border-e-0 overflow-hidden ${on ? 'text-[color:var(--paper)]' : 'hover:bg-black/5'}`}
               >
                 {on && <motion.span layoutId="site-room" className="absolute inset-0 bg-black" transition={{ type: 'spring', stiffness: 260, damping: 28 }} />}
-                <span className="relative block text-xs tabular-nums opacity-70">חדר {String(i + 1).padStart(2, '0')}</span>
-                <span className="relative block text-base lg:text-lg xl:text-xl leading-tight group-hover:-translate-x-[3px] transition-transform">{n.label}</span>
+                <span className="relative block text-xs tabular-nums opacity-70">{t.site.room(String(i + 1).padStart(2, '0'))}</span>
+                <span className="relative block text-base lg:text-lg xl:text-xl leading-tight rtl:group-hover:-translate-x-[3px] ltr:group-hover:translate-x-[3px] transition-transform">{n.label}</span>
               </button>
             )
           })}
         </nav>
+        <div className="flex items-center px-4 border-s-2 border-black">
+          <LangToggle className="h-10 min-w-12 px-2 border-2 border-black text-base hover:bg-black hover:text-[color:var(--paper)]" />
+        </div>
       </header>
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[var(--paper)]">
-        <Link to="/" aria-label="מדורות - לעמוד הראשי"><Logo className="w-40" /></Link>
-        <span className="text-sm tabular-nums">{c.year}</span>
+        <Link to={withLang('/')} aria-label={t.site.homeLink}><Logo className="w-40" /></Link>
+        <div className="flex items-center gap-3">
+          <span className="text-sm tabular-nums">{c.year}</span>
+          <LangToggle className="size-11 border-2 border-black text-base active:bg-black active:text-[color:var(--paper)]" />
+        </div>
       </div>
       <MobileNav active={page ? ('' as SectionId) : active} onGo={go} bar="bg-[var(--paper)] border-y-2 border-black" chip={(a) => `px-4 py-2.5 text-[17px] leading-none border-2 border-black ${a ? 'bg-black text-[color:var(--paper)]' : 'bg-[var(--paper)]'}`} />
 
@@ -113,7 +123,7 @@ export default function Site({ page }: { page?: 'privacy' | 'accessibility' }) {
         </main>
         {/* the sculpture: sticky on desktop, recombines by itself and takes the room's arrangement and color on each room change */}
         <motion.aside
-          aria-label="פסל מתחלף"
+          aria-label={t.site.sculpture}
           className="order-first md:order-none md:sticky md:top-[78px] md:h-[calc(100dvh-78px)] flex flex-col md:justify-center border-b-2 md:border-b-0 border-black"
           {...boxBg}
         >
@@ -132,13 +142,13 @@ export default function Site({ page }: { page?: 'privacy' | 'accessibility' }) {
           <p className="text-xl">{c.tagline}</p>
           <p className="mt-1 text-base opacity-80">{c.settings.venue}</p>
         </div>
-        <nav aria-label="ניווט בכותרת התחתונה" className="flex flex-wrap gap-x-5 gap-y-2 text-lg">
+        <nav aria-label={t.site.footerNav} className="flex flex-wrap gap-x-5 gap-y-2 text-lg">
           {c.nav.map((n) => <button key={n.id} type="button" onClick={() => go(n.id)} className="underline-offset-4 hover:underline">{n.label}</button>)}
-          <Link to="/privacy" className="underline-offset-4 hover:underline">מדיניות פרטיות</Link>
-          <Link to="/accessibility" className="underline-offset-4 hover:underline">הצהרת נגישות</Link>
+          <Link to={withLang('/privacy')} className="underline-offset-4 hover:underline">{t.site.privacy}</Link>
+          <Link to={withLang('/accessibility')} className="underline-offset-4 hover:underline">{t.site.accessibility}</Link>
         </nav>
         <div className="flex flex-wrap items-center gap-6 md:justify-end">
-          <a className="inline-flex p-1 -m-1 rounded hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#fee801] transition-opacity" href={c.settings.instagramUrl} target="_blank" rel="noreferrer" aria-label="האינסטגרם של מדורות (נפתח בחלון חדש)" onClick={() => track('outbound', { to: 'instagram' })}>
+          <a className="inline-flex p-1 -m-1 rounded hover:opacity-75 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#fee801] transition-opacity" href={c.settings.instagramUrl} target="_blank" rel="noreferrer" aria-label={t.site.instagram} onClick={() => track('outbound', { to: 'instagram' })}>
             <InstagramIcon className="size-9 text-white" />
           </a>
           <Partners invert />
@@ -161,7 +171,7 @@ function InstagramIcon({ className = '' }: { className?: string }) {
 
 // a thin magenta line draws across the top of the panel on every room change
 function Wipe() {
-  return <motion.span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[var(--accent-2)] origin-right z-10" initial={{ scaleX: 0, opacity: 1 }} animate={{ scaleX: 1, opacity: 0 }} transition={{ scaleX: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.5, delay: 0.8 } }} />
+  return <motion.span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[var(--accent-2)] rtl:origin-right ltr:origin-left z-10" initial={{ scaleX: 0, opacity: 1 }} animate={{ scaleX: 1, opacity: 0 }} transition={{ scaleX: { duration: 0.9, ease: [0.16, 1, 0.3, 1] }, opacity: { duration: 0.5, delay: 0.8 } }} />
 }
 
 const H2 = ({ children }: { children: ReactNode }) => <h2 className="text-3xl md:text-4xl font-bold mt-14 mb-5 flex items-center gap-3"><span aria-hidden className="inline-block w-8 h-[3px] bg-black" />{children}</h2>
@@ -171,13 +181,22 @@ const Cta = ({ onClick, children }: { onClick: () => void; children: ReactNode }
 
 function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
   const c = useContent()
+  const source = useSourceContent()
+  const { t, withLang } = useLang()
+  const s = t.site
+  const fwd = t.brand.fwd
   const [box, setBox] = useState<{ s: number; i: number } | null>(null)
   switch (id) {
     case 'home':
       return (
         <div>
-          <OpenCallHeadline id="panel-title" lead="text-4xl md:text-6xl font-light" punch="text-[clamp(4.2rem,11vw,10.5rem)] font-black leading-[0.95] tracking-tight" />
-          <p className="mt-6 text-3xl md:text-5xl font-medium"><FestivalYear /></p>
+          {/* the open call on one line as the lead-in, then the festival name as the page's big headline (h1) */}
+          <header>
+            <OpenCallHeadline as="p" inline className="text-4xl md:text-6xl font-light leading-tight" />
+            <h1 id="panel-title" tabIndex={-1} className="mt-4 outline-none text-[clamp(4.2rem,11vw,10.5rem)] font-black leading-[0.95] tracking-tight">
+              <FestivalYear className="block !leading-[0.95]" />
+            </h1>
+          </header>
           <p className="mt-2 text-xl md:text-2xl">{c.tagline}</p>
           <div className="mt-10 space-y-4 text-xl md:text-2xl leading-relaxed max-w-[38ch]">
             <p>{c.home.invite}</p>
@@ -186,11 +205,11 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
             <p className="font-bold">{c.home.closing}</p>
           </div>
           <div className="mt-10 flex flex-wrap gap-3">
-            <Cta onClick={() => go('apply')}>{c.home.ctaPrimary} ←</Cta>
+            <Cta onClick={() => go('apply')}>{c.home.ctaPrimary} {fwd}</Cta>
             <button type="button" onClick={() => go('about')} className="min-h-14 px-6 border-2 border-black text-2xl hover:bg-black/5">{c.home.ctaSecondary}</button>
           </div>
           <dl className="mt-12 grid grid-cols-1 sm:grid-cols-3 border-2 border-black text-lg">
-            {[['תאריך הפסטיבל', c.settings.festivalDate], ['מועד אחרון להגשה', c.settings.deadline], ['מיקום', c.settings.venue]].map(([k, v]) => (
+            {[[s.festivalDate, c.settings.festivalDate], [s.deadline, c.settings.deadline], [s.venue, c.settings.venue]].map(([k, v]) => (
               <div key={k} className="p-4 border-b-2 sm:border-b-0 sm:border-e-2 last:border-0 border-black bg-[var(--accent)]">
                 <dt className="text-sm opacity-70">{k}</dt>
                 <dd className="text-xl">{v}</dd>
@@ -206,7 +225,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
           <div className="mt-8 space-y-5 text-2xl md:text-3xl leading-snug max-w-[34ch]">
             {c.about.paragraphs.map((p, i) => <p key={i}><Reveal text={p} delay={0.2 + i * 0.25} stagger={0.02} /></p>)}
           </div>
-          <ul className="mt-12 flex flex-wrap gap-3" aria-label="מילים מרכזיות">
+          <ul className="mt-12 flex flex-wrap gap-3" aria-label={s.keyWords}>
             {c.about.words.map((w, i) => (
               <motion.li key={w} initial={{ opacity: 0, scale: 0.6, rotate: i % 2 ? 8 : -8 }} animate={{ opacity: 1, scale: 1, rotate: i % 2 ? 2 : -2 }} transition={{ delay: 0.8 + i * 0.08, type: 'spring' }} drag dragSnapToOrigin className={`cursor-grab px-5 py-2 text-4xl md:text-5xl font-bold border-2 border-black ${i % 3 === 1 ? 'bg-[var(--accent-2)]' : i % 3 === 2 ? 'bg-black text-[color:var(--paper)]' : 'bg-[var(--accent)]'}`}>
                 {w}
@@ -214,7 +233,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
             ))}
           </ul>
           <p className="mt-10 text-lg max-w-[50ch] border-s-4 border-black ps-4">{c.about.nameNote}</p>
-          <div className="mt-10"><Cta onClick={() => go('open-call')}>לקול הקורא ←</Cta></div>
+          <div className="mt-10"><Cta onClick={() => go('open-call')}>{s.toOpenCall} {fwd}</Cta></div>
         </div>
       )
     case 'open-call':
@@ -223,7 +242,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
           <OpenCallHeadline id="panel-title" lead="text-4xl md:text-5xl font-light" punch="text-[clamp(3.6rem,9vw,8rem)] font-black leading-[0.95]" />
           <p className="mt-3 text-3xl"><FestivalYear /></p>
           <div className="mt-8 space-y-5 text-xl md:text-2xl leading-relaxed max-w-[44ch]">{c.openCall.paragraphs.map((p) => <p key={p}>{p}</p>)}</div>
-          <H2>תחומים</H2>
+          <H2>{s.disciplines}</H2>
           <ul className="grid grid-cols-2 lg:grid-cols-3 border-t-2 border-s-2 border-black">
             {c.openCall.disciplines.map((d, i) => (
               <motion.li key={d} whileHover={{ backgroundColor: '#0a0a0a', color: '#fee801' }} className="border-b-2 border-e-2 border-black p-4 min-h-28 flex flex-col justify-between">
@@ -232,9 +251,9 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
               </motion.li>
             ))}
           </ul>
-          <H2>מי יכול.ה להגיש?</H2>
+          <H2>{s.who}</H2>
           <p className="text-xl md:text-2xl max-w-[44ch]">{c.openCall.who}</p>
-          <H2>מה אפשר להגיש?</H2>
+          <H2>{s.what}</H2>
           <div className="grid sm:grid-cols-2 gap-3">
             {c.openCall.stages.map((s, i) => (
               <div key={s.id} className="border-2 border-black p-5 bg-[var(--accent)]" style={{ transform: `rotate(${[-1, 0.8, -0.5, 1][i % 4]}deg)` }}>
@@ -244,48 +263,48 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
             ))}
           </div>
           <p className="mt-5 text-2xl font-bold bg-black text-[color:var(--paper)] inline-block px-3 py-1">{c.openCall.stagesNote}</p>
-          <H2>המרחבים</H2>
+          <H2>{s.spaces}</H2>
           <p className="text-xl md:text-2xl max-w-[44ch]">{c.openCall.spaces}</p>
-          <button type="button" onClick={() => go('spaces')} className="mt-3 text-xl underline underline-offset-4">לצילומי המרחבים ←</button>
-          <div className="mt-12"><Cta onClick={() => go('apply')}>להגשת הצעה ←</Cta></div>
+          <button type="button" onClick={() => go('spaces')} className="mt-3 text-xl underline underline-offset-4">{s.toSpacePhotos} {fwd}</button>
+          <div className="mt-12"><Cta onClick={() => go('apply')}>{s.apply} {fwd}</Cta></div>
         </div>
       )
     case 'spaces':
       return (
         <div>
-          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">מרחבי הפסטיבל</PanelTitle>
+          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{s.spacesTitle}</PanelTitle>
           <p className="mt-4 text-xl md:text-2xl max-w-[44ch]">{c.openCall.spaces}</p>
           <div className="mt-10 space-y-16">
-            {c.spaces.map((s, si) => (
-              <article key={s.id} aria-labelledby={`sp-${s.id}`}>
+            {c.spaces.map((sp, si) => (
+              <article key={sp.id} aria-labelledby={`sp-${sp.id}`}>
                 <div className="flex items-baseline gap-4 mb-4">
                   <span aria-hidden className="text-6xl font-black tabular-nums">0{si + 1}</span>
                   <div>
-                    <h2 id={`sp-${s.id}`} className="text-3xl md:text-4xl font-bold">{s.name}</h2>
-                    <p className="text-xl">{s.desc}</p>
+                    <h2 id={`sp-${sp.id}`} className="text-3xl md:text-4xl font-bold">{sp.name}</h2>
+                    <p className="text-xl">{sp.desc}</p>
                   </div>
                 </div>
                 <div className="no-scrollbar flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2" role="list">
-                  {s.photos.map((p, i) => (
-                    <motion.button role="listitem" key={p.src} type="button" whileHover={{ y: -6 }} onClick={() => setBox({ s: si, i })} className={`snap-start shrink-0 border-2 border-black bg-black ${i === 0 ? 'w-[82%] md:w-[60%]' : 'w-[60%] md:w-[34%]'}`} aria-label={`הגדלה: ${p.alt}`}>
+                  {sp.photos.map((p, i) => (
+                    <motion.button role="listitem" key={p.src} type="button" whileHover={{ y: -6 }} onClick={() => setBox({ s: si, i })} className={`snap-start shrink-0 border-2 border-black bg-black ${i === 0 ? 'w-[82%] md:w-[60%]' : 'w-[60%] md:w-[34%]'}`} aria-label={s.enlarge(p.alt)}>
                       <img src={img(p)} alt="" loading="lazy" className="block w-full aspect-[4/3] object-cover" />
                     </motion.button>
                   ))}
                 </div>
-                <p className="text-sm mt-1 opacity-70">{s.photos.length} צילומים · גללו הצידה או לחצו להגדלה</p>
+                <p className="text-sm mt-1 opacity-70">{t.site.photosHint(sp.photos.length)}</p>
               </article>
             ))}
           </div>
-          <Lightbox photos={box ? c.spaces[box.s].photos : []} index={box?.i ?? null} onIndex={(i) => setBox((b) => b && { ...b, i })} onClose={() => setBox(null)} title={box ? c.spaces[box.s].name : ''} />
+          <Lightbox photos={box ? c.spaces[box.s].photos : []} index={box?.i ?? null} onIndex={(i) => setBox((b) => b && { ...b, i })} onClose={() => setBox(null)} title={box ? c.spaces[box.s].name : ''} trackAs={box ? source.spaces[box.s]?.name : undefined} />
         </div>
       )
     case 'apply':
       return (
         <div>
-          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">הגשת הצעה</PanelTitle>
-          <p className="mt-3 mb-10 text-xl md:text-2xl max-w-[44ch]">{c.openCall.stagesNote} ארבעה שלבים קצרים, ואפשר לחזור אחורה בכל רגע בלי לאבד את מה שכתבתם.</p>
-          <Suspense fallback={<p className="text-xl" role="status">טוענים את הטופס…</p>}>
-            <ApplicationForm mode="live" privacyHref="/privacy" />
+          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{s.applyTitle}</PanelTitle>
+          <p className="mt-3 mb-10 text-xl md:text-2xl max-w-[44ch]">{c.openCall.stagesNote} {s.applyIntro}</p>
+          <Suspense fallback={<p className="text-xl" role="status">{s.loadingForm}</p>}>
+            <ApplicationForm mode="live" privacyHref={withLang('/privacy')} />
           </Suspense>
         </div>
       )
@@ -301,15 +320,15 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
     case 'details':
       return (
         <div>
-          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">פרטים</PanelTitle>
+          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{s.detailsTitle}</PanelTitle>
           <InfoList className="mt-8 border-t-2 border-black" row="border-b-2 border-black py-4" />
           <div className="mt-12 p-6 md:p-8 bg-black text-[color:var(--paper)]">
             <p className="text-3xl md:text-4xl font-bold nikud">{c.finalCta.text}</p>
-            <button type="button" onClick={() => go('apply')} className="mt-5 min-h-14 px-8 bg-[var(--paper)] text-black text-2xl font-bold">{c.finalCta.button} ←</button>
+            <button type="button" onClick={() => go('apply')} className="mt-5 min-h-14 px-8 bg-[var(--paper)] text-black text-2xl font-bold">{c.finalCta.button} {fwd}</button>
           </div>
           <p className="mt-10 text-lg flex flex-wrap gap-x-6 gap-y-2">
-            <Link to="/privacy" className="underline underline-offset-4">מדיניות פרטיות</Link>
-            <Link to="/accessibility" className="underline underline-offset-4">הצהרת נגישות</Link>
+            <Link to={withLang('/privacy')} className="underline underline-offset-4">{s.privacy}</Link>
+            <Link to={withLang('/accessibility')} className="underline underline-offset-4">{s.accessibility}</Link>
           </p>
         </div>
       )
