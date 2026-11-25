@@ -1,0 +1,92 @@
+{
+ "pink": {
+  "w": 1400,
+  "h": 1358,
+  "parts": [
+   {
+    "file": "pink_part0",
+    "layer": "4fcbbcff2a6740198efc0214d3b0780f copy 2",
+    "x": 694,
+    "y": 122,
+    "w": 333,
+    "h": 272,
+    "z": 0
+   },
+   {
+    "file": "pink_part1",
+    "layer": "shutterstock_2331814989 copy 5",
+    "x": 0,
+    "y": 0,
+    "w": 1400,
+    "h": 1358,
+    "z": 1
+   }
+  ]
+ },
+ "yellow": {
+  "w": 1400,
+  "h": 1939,
+  "parts": [
+   {
+    "file": "yellow_part0",
+    "layer": "4fcbbcff2a6740198efc0214d3b0780f copy",
+    "x": 208,
+    "y": 1290,
+    "w": 358,
+    "h": 574,
+    "z": 0
+   },
+   {
+    "file": "yellow_part1",
+    "layer": "e434e7fdc211eed45e5233bbd138a989 copy",
+    "x": 1,
+    "y": 725,
+    "w": 1359,
+    "h": 1214,
+    "z": 1
+   },
+   {
+    "file": "yellow_part2",
+    "layer": "faf7cb8b93838b1b0f79447a7dd3d4e9 copy",
+    "x": 30,
+    "y": 1,
+    "w": 1369,
+    "h": 829,
+    "z": 2
+   }
+  ]
+ },
+ "cream": {
+  "w": 1400,
+  "h": 1615,
+  "parts": [
+   {
+    "file": "cream_part0",
+    "layer": "8bc38191d746e8501dda575b8ae47f5c",
+    "x": 2,
+    "y": 509,
+    "w": 1397,
+    "h": 1106,
+    "z": 0
+   },
+   {
+    "file": "cream_part1",
+    "layer": "4fcbbcff2a6740198efc0214d3b0780f copy 3",
+    "x": 418,
+    "y": 41,
+    "w": 445,
+    "h": 275,
+    "z": 1
+   },
+   {
+    "file": "cream_part2",
+    "layer": "d6ce403d8622f188ddc65cc3bbab8d9c",
+    "x": 145,
+    "y": 14,
+    "w": 827,
+    "h": 835,
+    "z": 2
+   }
+  ]
+ }
+}

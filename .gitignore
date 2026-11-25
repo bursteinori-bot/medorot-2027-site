@@ -1,0 +1,22 @@
+# Code, texts and web-ready assets go to GitHub. Source design files (PSD, smart objects), the local Python venv,
+# builds and secrets stay on this computer — see HANDOFF.md for where they are.
+node_modules/
+dist/
+dist-ssr/
+.vercel/
+.env
+.env.*
+!.env.example
+*.local
+*.log
+__pycache__/
+*.pyc
+tools/venv/
+**/.claude/settings.local.json
+
+# heavy design sources
+*.psd
+*.psb
+*.8bpb
+*.ai
+audit/smartobjects/

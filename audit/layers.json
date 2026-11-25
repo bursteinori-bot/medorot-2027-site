@@ -1,0 +1,929 @@
+{
+ "medorot_poster/צהוב/פרפורמנס copy": {
+  "text": "פרפורמנס",
+  "bbox": [
+   2382,
+   10405,
+   2692,
+   10461
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/מחול copy": {
+  "text": "מחול",
+  "bbox": [
+   1338,
+   10388,
+   1496,
+   10463
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/אומנות פלסטית copy": {
+  "text": "אומנות פלסטית",
+  "bbox": [
+   174,
+   10387,
+   660,
+   10462
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/פסטיבל copy": {
+  "text": "פסטיבל",
+  "bbox": [
+   886,
+   10728,
+   1888,
+   11040
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/festival copy": {
+  "text": "festival",
+  "bbox": [
+   803,
+   11393,
+   1978,
+   11666
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   },
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/מדורות copy": {
+  "text": "מדורות",
+  "bbox": [
+   1617,
+   11102,
+   2524,
+   11328
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/medorot copy": {
+  "text": "medorot",
+  "bbox": [
+   229,
+   11063,
+   1517,
+   11337
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   },
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/Jewish Art Sparks Thought copy": {
+  "text": "Jewish Art\rSparks Thought",
+  "bbox": [
+   2087,
+   11473,
+   2692,
+   11637
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.85922",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/אומנות יהודית מציתה מחשבה copy": {
+  "text": "אומנות יהודית\rמציתה מחשבה",
+  "bbox": [
+   177,
+   11482,
+   640,
+   11619
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.85922",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/צהוב/faf7cb8b93838b1b0f79447a7dd3d4e9 copy": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   577,
+   12036,
+   2246,
+   14347
+  ],
+  "bytes": 26718204
+ },
+ "medorot_poster/צהוב/medurot logo": {
+  "smartobject": null,
+  "linked": "data",
+  "bbox": [
+   1845,
+   14824,
+   2713,
+   14994
+  ],
+  "bytes": 686289
+ },
+ "medorot_poster/צהוב/jcu logo": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   540,
+   14847,
+   793,
+   14973
+  ],
+  "bytes": 1048576
+ },
+ "medorot_poster/צהוב/bk logo": {
+  "smartobject": "png",
+  "linked": "data",
+  "bbox": [
+   921,
+   14855,
+   1186,
+   14976
+  ],
+  "bytes": 146038
+ },
+ "medorot_poster/צהוב/kol haneshama logo": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   168,
+   14777,
+   414,
+   15024
+  ],
+  "bytes": 1048576
+ },
+ "medorot_poster/קרם/פרפורמנס copy": {
+  "text": "פרפורמנס",
+  "bbox": [
+   5380,
+   10405,
+   5690,
+   10461
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/מחול copy": {
+  "text": "מחול",
+  "bbox": [
+   4336,
+   10388,
+   4494,
+   10463
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/אומנות פלסטית copy": {
+  "text": "אומנות פלסטית",
+  "bbox": [
+   3172,
+   10387,
+   3658,
+   10462
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/פסטיבל copy": {
+  "text": "פסטיבל",
+  "bbox": [
+   3884,
+   10728,
+   4886,
+   11040
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/festival copy": {
+  "text": "festival",
+  "bbox": [
+   3801,
+   11393,
+   4976,
+   11666
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   },
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/מדורות copy": {
+  "text": "מדורות",
+  "bbox": [
+   4615,
+   11102,
+   5522,
+   11328
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/medorot copy": {
+  "text": "medorot",
+  "bbox": [
+   3227,
+   11063,
+   4515,
+   11337
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   },
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/Jewish Art Sparks Thought copy": {
+  "text": "Jewish Art\rSparks Thought",
+  "bbox": [
+   5085,
+   11473,
+   5690,
+   11637
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.85922",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/אומנות יהודית מציתה מחשבה copy": {
+  "text": "אומנות יהודית\rמציתה מחשבה",
+  "bbox": [
+   3175,
+   11482,
+   3638,
+   11619
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.85922",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/קרם/medurot logo": {
+  "smartobject": null,
+  "linked": "data",
+  "bbox": [
+   4843,
+   14824,
+   5711,
+   14994
+  ],
+  "bytes": 686289
+ },
+ "medorot_poster/קרם/Black & White 1": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   3404,
+   11888,
+   5484,
+   14287
+  ],
+  "bytes": 38085612
+ },
+ "medorot_poster/קרם/jcu logo": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   3538,
+   14847,
+   3791,
+   14973
+  ],
+  "bytes": 1048576
+ },
+ "medorot_poster/קרם/bk logo": {
+  "smartobject": "png",
+  "linked": "data",
+  "bbox": [
+   3919,
+   14855,
+   4184,
+   14976
+  ],
+  "bytes": 146038
+ },
+ "medorot_poster/קרם/kol haneshama logo": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   3166,
+   14777,
+   3412,
+   15024
+  ],
+  "bytes": 1048576
+ },
+ "medorot_poster/ורוד/פרפורמנס copy": {
+  "text": "פרפורמנס",
+  "bbox": [
+   8378,
+   10405,
+   8688,
+   10461
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/מחול copy": {
+  "text": "מחול",
+  "bbox": [
+   7334,
+   10388,
+   7492,
+   10463
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/אומנות פלסטית copy": {
+  "text": "אומנות פלסטית",
+  "bbox": [
+   6170,
+   10387,
+   6656,
+   10462
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.39932",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/פסטיבל copy": {
+  "text": "פסטיבל",
+  "bbox": [
+   6882,
+   10728,
+   7884,
+   11040
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/festival copy": {
+  "text": "festival",
+  "bbox": [
+   6799,
+   11393,
+   7974,
+   11666
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   },
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/מדורות copy": {
+  "text": "מדורות",
+  "bbox": [
+   7613,
+   11102,
+   8520,
+   11328
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/medorot copy": {
+  "text": "medorot",
+  "bbox": [
+   6225,
+   11063,
+   7513,
+   11337
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   },
+   {
+    "font": "'FrankRuhlProLight'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/Jewish Art Sparks Thought copy": {
+  "text": "Jewish Art\rSparks Thought",
+  "bbox": [
+   8083,
+   11473,
+   8688,
+   11637
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.85922",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/אומנות יהודית מציתה מחשבה copy": {
+  "text": "אומנות יהודית\rמציתה מחשבה",
+  "bbox": [
+   6173,
+   11482,
+   6636,
+   11619
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlProRegular'",
+    "size": "393.85922",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "medorot_poster/ורוד/medurot logo": {
+  "smartobject": null,
+  "linked": "data",
+  "bbox": [
+   7841,
+   14824,
+   8709,
+   14994
+  ],
+  "bytes": 686289
+ },
+ "medorot_poster/ורוד/shutterstock_2331814989 copy 5": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   6013,
+   11853,
+   8737,
+   14495
+  ],
+  "bytes": 153065694
+ },
+ "medorot_poster/ורוד/jcu logo": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   6536,
+   14847,
+   6789,
+   14973
+  ],
+  "bytes": 1048576
+ },
+ "medorot_poster/ורוד/bk logo": {
+  "smartobject": "png",
+  "linked": "data",
+  "bbox": [
+   6917,
+   14855,
+   7182,
+   14976
+  ],
+  "bytes": 146038
+ },
+ "medorot_poster/ורוד/kol haneshama logo": {
+  "smartobject": "8bpb",
+  "linked": "data",
+  "bbox": [
+   6164,
+   14777,
+   6410,
+   15024
+  ],
+  "bytes": 1048576
+ },
+ "vayehi_erev/ג/Layer 0": {
+  "kind": "pixel",
+  "bbox": [
+   0,
+   0,
+   4024,
+   1000
+  ]
+ },
+ "vayehi_erev/ג/עֶרֶב": {
+  "text": "עֶרֶב",
+  "bbox": [
+   244,
+   379,
+   755,
+   699
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlLibre-Light'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ },
+ "vayehi_erev/ג/Screenshot 2026-11-14 at 20.58.42": {
+  "smartobject": "png",
+  "linked": "data",
+  "bbox": [
+   0,
+   175,
+   1000,
+   825
+  ],
+  "bytes": 2436960
+ },
+ "vayehi_erev/ב/Layer 1": {
+  "kind": "pixel",
+  "bbox": [
+   0,
+   0,
+   4024,
+   1000
+  ]
+ },
+ "vayehi_erev/ב/medurot logo": {
+  "smartobject": null,
+  "linked": "data",
+  "bbox": [
+   -394,
+   271,
+   1945,
+   728
+  ],
+  "bytes": 686289
+ },
+ "vayehi_erev/ב/Layer 3": {
+  "kind": "pixel",
+  "bbox": [
+   1285,
+   315,
+   1915,
+   685
+  ]
+ },
+ "vayehi_erev/א/Layer 2": {
+  "kind": "solidcolorfill",
+  "bbox": [
+   0,
+   0,
+   3200,
+   1000
+  ]
+ },
+ "vayehi_erev/א/וַיְהִי": {
+  "text": "וַיְהִי",
+  "bbox": [
+   2476,
+   379,
+   2947,
+   699
+  ],
+  "styles": [
+   {
+    "font": "'FrankRuhlLibre-Light'",
+    "size": "416.66666",
+    "tracking": "-20",
+    "fill": [
+     1.0,
+     0.0376,
+     0.0388,
+     0.0389
+    ]
+   }
+  ]
+ }
+}

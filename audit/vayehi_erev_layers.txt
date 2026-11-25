@@ -1,0 +1,12 @@
+3200x1000 mode=3 depth=8
+[artboard] 'ג' vis=True op=255 blend=NORMAL bbox=(0, 0, 1000, 1000)
+  [pixel] 'Layer 0' vis=True op=255 blend=NORMAL bbox=(0, 0, 4024, 1000)
+  [type] 'עֶרֶב' vis=True op=255 blend=NORMAL bbox=(244, 379, 755, 699)
+  [smartobject] 'Screenshot 2026-11-14 at 20.58.42' vis=False op=255 blend=NORMAL bbox=(0, 175, 1000, 825)
+[artboard] 'ב' vis=True op=255 blend=NORMAL bbox=(1100, 0, 2100, 1000)
+  [pixel] 'Layer 1' vis=True op=255 blend=NORMAL bbox=(0, 0, 4024, 1000)
+  [smartobject] 'medurot logo' vis=False op=255 blend=NORMAL bbox=(-394, 271, 1945, 728)
+  [pixel] 'Layer 3' vis=True op=255 blend=NORMAL bbox=(1285, 315, 1915, 685)
+[artboard] 'א' vis=True op=255 blend=NORMAL bbox=(2200, 0, 3200, 1000)
+  [solidcolorfill] 'Layer 2' vis=True op=255 blend=NORMAL bbox=(0, 0, 3200, 1000)
+  [type] 'וַיְהִי' vis=True op=255 blend=NORMAL bbox=(2476, 379, 2947, 699)

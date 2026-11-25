@@ -1,0 +1,94 @@
+@import 'tailwindcss';
+
+/* Brand tokens, sampled from the festival's PSD files (vayehi_erev.psd fills, poster type colour). */
+@theme {
+  --color-yellow: #fee801;
+  --color-ivory: #fefaee;
+  --color-magenta: #e13d96;
+  --color-ink: #0a0a0a;
+  --font-brand: 'Frank Ruhl Libre', 'Frank Ruhl Libre Variable', 'Times New Roman', serif;
+}
+
+/* Per-concept surface variables used by the shared sections (form, donation, info). */
+:root {
+  --ink: #0a0a0a;
+  --paper: #fefaee;
+  --accent: #fee801;
+  --accent-2: #e13d96;
+  --line: #0a0a0a;
+  --field: #ffffff;
+  --radius: 0px;
+  --focus: #e13d96;
+}
+
+/* base rules live in the base layer so Tailwind utilities (layered) can override them */
+@layer base {
+  html {
+    font-family: var(--font-brand);
+    color: var(--color-ink);
+    background: var(--color-ivory);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+  }
+  /* sculpture parts waiting off-stage must never widen the page (body/html overflow would propagate to the
+     viewport instead of clipping, so the clip sits on #root) */
+  #root {
+    overflow-x: clip;
+  }
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+}
+@layer utilities {
+  .font-brand {
+    font-family: var(--font-brand);
+  }
+  /* Hebrew niqqud needs room above and below */
+  .nikud {
+    line-height: 1.25;
+    padding-block: 0.08em;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+/* paper grain for concept 5, and a lighter one for the journal */
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: var(--grain, 0.18);
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "medorot",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "C:\\Users\\אורי\\Documents\\Medorot 2027 - אתר\\site"],
+      "port": 5273
+    }
+  ]
+}
