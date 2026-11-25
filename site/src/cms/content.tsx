@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { SEED, type SiteContent } from '../content'
+import { DONATION_COMMENT, SEED, type SiteContent } from '../content'
 import { useLang } from '../i18n/lang'
 import { localizeContent, type StoredContent } from '../i18n/localize'
 
@@ -21,7 +21,25 @@ export function withSeed(published: Partial<StoredContent>): StoredContent {
     const base = (SEED as Record<string, unknown>)[k]
     out[k] = base && typeof base === 'object' && !Array.isArray(base) && v && typeof v === 'object' && !Array.isArray(v) ? { ...base, ...v } : v
   }
-  return out as StoredContent
+  return migrateLegacy(out as StoredContent)
+}
+
+// 25.11.2026: the team renamed "תרומה" (donation) to "תמיכה בפסטיבל" everywhere and dropped the reply-date promise.
+// Versions published before that still hold the old wording; show the current seed text instead, so the site never
+// says "תרומה" or promises a reply schedule. The payment link always pre-fills iCredit's "תשלום עבור" field.
+const OLD_WORDING = /תרומ/
+function migrateLegacy(c: StoredContent): StoredContent {
+  const support = { ...c.support }
+  if (OLD_WORDING.test(support.button)) support.button = SEED.support.button
+  if (OLD_WORDING.test(support.notLive)) support.notLive = SEED.support.notLive
+  support.paragraphs = support.paragraphs.map((p, i) => (OLD_WORDING.test(p) ? (SEED.support.paragraphs[i] ?? p.replace(/תרומה/g, 'תמיכה בפסטיבל')) : p))
+  const lines = c.confirmation.lines.map((l, i) => (/לוח הזמנים שיפורסם/.test(l) ? (SEED.confirmation.lines[i] ?? l) : l))
+  const settings = { ...c.settings, donationUrl: withComment(c.settings.donationUrl) }
+  return { ...c, support, confirmation: { ...c.confirmation, lines }, settings }
+}
+function withComment(url: string | null): string | null {
+  if (!url || !/icredit\.rivhit\.co\.il\/payment\/DonationPage\.aspx/i.test(url) || /[?&]Comments=/i.test(url)) return url
+  return `${url}&Comments=${encodeURIComponent(DONATION_COMMENT)}`
 }
 
 export function ContentProvider({ children }: { children: ReactNode }) {
