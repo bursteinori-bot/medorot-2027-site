@@ -78,6 +78,8 @@ export const he = {
     whatsapp: 'וואטסאפ',
     contact: 'ליצירת קשר',
     partners: 'שותפים',
+    creators: 'יוצרי הפסטיבל',
+    creatorsNames: 'נוה מושון וטהר דהאן',
   },
 
   support: {

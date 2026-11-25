@@ -10,6 +10,7 @@ export function InfoList({ className = '', row = 'border-b border-[color:var(--l
     [t.festivalDate, s.festivalDate],
     [t.deadline, s.deadline],
     [t.venue, s.venue],
+    [t.creators, t.creatorsNames],
     [t.instagram, `@${s.instagram}`, s.instagramUrl],
     [t.whatsapp, s.whatsapp, s.whatsapp ? `https://wa.me/${s.whatsapp.replace(/\D/g, '').replace(/^0/, '972')}` : undefined],
     [t.contact, s.email, s.email ? `mailto:${s.email}` : undefined],
