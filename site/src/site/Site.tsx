@@ -7,7 +7,7 @@ import { img, type SectionId } from '../content'
 import { useLang } from '../i18n/lang'
 import { SculptureMixer } from '../sculpture/SculptureMixer'
 import { FestivalYear, OpenCallHeadline, PanelTitle, Reveal } from '../shared/Blocks'
-import { Donation } from '../shared/Donation'
+import { Donation, DonationFrame } from '../shared/Donation'
 import { InfoList, Partners } from '../shared/Info'
 import { LangToggle } from '../shared/LangToggle'
 import { Lightbox } from '../shared/Lightbox'
@@ -314,7 +314,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
           <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-[0.95]">{c.support.title}</PanelTitle>
           <div className="mt-8 space-y-4 text-xl md:text-2xl leading-relaxed max-w-[42ch]">{c.support.paragraphs.map((p) => <p key={p}>{p}</p>)}</div>
           <p className="mt-6 text-2xl md:text-3xl font-bold">{c.support.closing}</p>
-          <div className="mt-10 border-2 border-black bg-[var(--accent)] p-6 md:p-8"><Donation /></div>
+          {c.settings.paymentsEnabled && c.settings.donationUrl ? <DonationFrame /> : <div className="mt-10 border-2 border-black bg-[var(--accent)] p-6 md:p-8"><Donation /></div>}
         </div>
       )
     case 'details':

@@ -91,6 +91,9 @@ export const he = {
     chosen: (n: string) => `בחרתם ${n} ₪, הקלידו אותו בעמוד הבא`,
     opensNewWindow: '(נפתח בחלון חדש)',
     trust: 'התשלום מתבצע במערכת המאובטחת של קהילת כל הנשמה (iCredit), והקבלה נשלחת מהם.',
+    frameTitle: 'טופס תמיכה בפסטיבל, במערכת התשלום המאובטחת של קהילת כל הנשמה',
+    openSeparately: 'הטופס לא נטען? לפתיחה בחלון נפרד',
+    frameLangNote: '',
     instagram: (handle: string) => `לפנות אלינו באינסטגרם @${handle}`,
   },
 

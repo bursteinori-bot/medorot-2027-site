@@ -4,7 +4,40 @@ import { track } from '../analytics'
 import { useContent } from '../cms/content'
 import { useT } from '../i18n/lang'
 
-// Supporting the festival. Stage 1 is a link-out: the button opens Kol HaNeshama's secure iCredit page in a new tab
+// The live support form: Kol HaNeshama's secure iCredit donation page, embedded in the site (iCredit supports iframe
+// display; the page sends no frame-ancestors/X-Frame-Options). "תשלום עבור" arrives pre-filled through ?Comments=.
+// allow="payment" lets Apple Pay / Google Pay run inside the frame. A plain link opens the same page in its own window
+// for browsers that block the frame (e.g. strict third-party-cookie settings).
+export function DonationFrame() {
+  const { settings: SETTINGS } = useContent()
+  const t = useT().support
+  const url = SETTINGS.donationUrl!
+  return (
+    <div className="mt-10">
+      {t.frameLangNote && <p className="mb-3 text-base">{t.frameLangNote}</p>}
+      <div className="border-2 border-black bg-white">
+        <iframe
+          src={url}
+          title={t.frameTitle}
+          allow="payment"
+          loading="lazy"
+          referrerPolicy="strict-origin-when-cross-origin"
+          onLoad={() => track('donation_frame_loaded')}
+          className="block w-full h-[1620px] md:h-[1520px] border-0 bg-white"
+        />
+      </div>
+      <p id="donation-trust" className="mt-4 text-base opacity-80">
+        {t.trust}{' '}
+        <a href={url} target="_blank" rel="noopener noreferrer" onClick={() => track('donation_click', { from: 'fallback' })} className="underline underline-offset-4">
+          {t.openSeparately}
+          <span className="sr-only"> {t.opensNewWindow}</span>
+        </a>
+      </p>
+    </div>
+  )
+}
+
+// Supporting the festival, link-out version (used while payments are off, and by the concept prototypes): the button opens Kol HaNeshama's secure iCredit page in a new tab
 // (settings.donationUrl, built in src/content.ts). That page takes no amount from the address, so the chips are only
 // suggestions: the chosen amount is repeated in the hint, and the visitor types it on the next page.
 // While payments are off (or no URL is set) the button stays disabled and the "not live" note shows instead.

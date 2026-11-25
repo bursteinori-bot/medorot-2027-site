@@ -83,6 +83,9 @@ export const en: Dict = {
     chosen: (n: string) => `You chose ₪${n}: enter it on the next page`,
     opensNewWindow: '(opens in a new window)',
     trust: 'Payment is processed on the secure system of the Kol HaNeshama Congregation (iCredit), which also sends the receipt.',
+    frameTitle: 'Festival support form, on the Kol HaNeshama Congregation’s secure payment system',
+    openSeparately: 'Form not loading? Open it in a separate window',
+    frameLangNote: 'The payment form is in Hebrew: fill in last name, first name, email and phone, then the amount and card details.',
     instagram: (handle: string) => `Contact us on Instagram @${handle}`,
   },
 
