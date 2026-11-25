@@ -10,5 +10,5 @@
     "skipLibCheck": true,
     "noUnusedLocals": true
   },
-  "include": ["api", "src/shared/application.ts", "src/content.ts", "src/vite-env.d.ts"]
+  "include": ["api", "src/shared/application.ts", "src/shared/uiOverrides.ts", "src/content.ts", "src/vite-env.d.ts"]
 }

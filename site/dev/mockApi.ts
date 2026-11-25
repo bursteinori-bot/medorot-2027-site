@@ -9,6 +9,7 @@ import type { IncomingMessage, ServerResponse } from 'node:http'
 import { randomUUID } from 'node:crypto'
 import { fieldCodes, fieldErrors, startSchema } from '../src/shared/application'
 import { SEED } from '../src/content'
+import { uiOverridesSchema } from '../src/shared/uiOverrides'
 
 type App = { id: string; key: string; status: 'draft' | 'new'; files: { name: string; size: number }[]; received: Map<number, number> }
 
@@ -98,7 +99,11 @@ export function mockApi(): Plugin {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ?? ''
         if (url === '/api/applications/status') return send(res, 200, { open: true })
-        if (url === '/api/content') return send(res, 204)
+        // like api/content.ts: the published version (so what is published in the mock admin shows on the site)
+        if (url === '/api/content') {
+          const pub = versions.find((v) => v.status === 'published')
+          return pub ? send(res, 200, { content: pub.content, publishedAt: pub.published_at }) : send(res, 204)
+        }
         if (url === '/api/applications/start' && req.method === 'POST') {
           const parsed = startSchema.safeParse(JSON.parse((await readBody(req)).toString() || 'null'))
           if (!parsed.success) return send(res, 400, { error: 'יש שדות שצריך לתקן לפני השליחה.', code: 'invalid', fields: fieldErrors(parsed.error), fieldCodes: fieldCodes(parsed.error) })
@@ -224,10 +229,12 @@ export function mockApi(): Plugin {
           }
           case 'POST content-save': {
             if (!body.content || typeof body.content !== 'object') return fail(res, 400, 'התוכן לא תקין.', 'invalidContent')
+            const ui = (body.content as { ui?: unknown }).ui
+            if (ui !== undefined && !uiOverridesSchema.safeParse(ui).success) return fail(res, 400, 'התוכן לא תקין.', 'invalidContent')
             const d = versions.find((v) => v.id === body.id && v.status === 'draft')
             if (d) d.content = body.content
             else versions.unshift({ id: randomUUID(), status: 'draft', note: null, created_at: new Date().toISOString(), published_at: null, author: ME.display_name, content: body.content })
-            console.log('[mock] content-save en =', JSON.stringify((body.content as { en?: unknown }).en ?? null))
+            console.log('[mock] content-save en =', JSON.stringify((body.content as { en?: unknown }).en ?? null), 'ui =', JSON.stringify(ui ?? null))
             return send(res, 200, { id: (d ?? versions[0]).id })
           }
           case 'POST content-publish': {

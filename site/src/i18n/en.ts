@@ -1,6 +1,7 @@
 // Every fixed English text of the site. Same shape as he.ts (typed against it): a missing key is a TypeScript error.
-// CMS-editable content has its English in content.en.ts.
-import { LEGAL_DETAILS as L } from '../content'
+// CMS-editable content has its English in content.en.ts. Every text here can also be replaced from the admin
+// ("All site texts", src/i18n/ui.ts).
+import { YEAR } from '../content'
 import { adminEn } from './admin.en'
 import type { Dict, LegalSection } from './he'
 
@@ -22,6 +23,7 @@ export const en: Dict = {
 
   brand: {
     festival: 'Medorot',
+    year: YEAR,
     openCallLead: 'Open Call:',
     openCallPunch: 'Make way…',
     logoAlt: 'Medorot Festival',
@@ -51,13 +53,10 @@ export const en: Dict = {
     spaces: 'The spaces',
     toSpacePhotos: 'See photos of the spaces',
     apply: 'Submit a proposal',
-    spacesTitle: 'Festival Spaces',
     enlarge: (alt: string) => `Enlarge: ${alt}`,
     photosHint: (n: number) => `${n} photos · scroll sideways or tap to enlarge`,
-    applyTitle: 'Submit a Proposal',
     applyIntro: 'Four short steps, and you can go back at any point without losing what you’ve written.',
     loadingForm: 'Loading the form…',
-    detailsTitle: 'Details',
   },
 
   mobileNav: { open: 'Site menu +', close: 'Close menu ×' },
@@ -150,8 +149,10 @@ export const en: Dict = {
     stage: 'What stage is the project at?',
     portfolio: 'Portfolio',
     portfolioHint: 'A link to your portfolio or previous work. Portfolio in a PDF? Upload it to Google Drive or Dropbox and share it with anyone who has the link.',
+    portfolioPlaceholder: 'https://',
     social: 'Instagram / artist website',
     socialHint: 'A link to your Instagram page or website. Optional.',
+    socialPlaceholder: 'https://instagram.com/...',
     visuals: 'Visual materials for the proposed project',
     visualsHint: 'For an existing work or a project in development, you can attach photos, videos and documentation. For an initial idea, you can attach a mood board, references, sketches, drawings or visualisations.',
     uploadRules: (imgMb: number, mb: number, files: number) =>
@@ -172,7 +173,8 @@ export const en: Dict = {
     retry: 'Try again',
     submit: 'Send proposal',
     errorCount: (n: number) => (n === 1 ? '1 field needs fixing' : `${n} fields need fixing`),
-    sendingNote: (withFiles: boolean) => `Sending your proposal${withFiles ? ' and uploading your files' : ''}. Please don’t close this page.`,
+    sendingNote: 'Sending your proposal. Please don’t close this page.',
+    sendingNoteFiles: 'Sending your proposal and uploading your files. Please don’t close this page.',
     uploaded: (pct: number) => `${pct}% uploaded`,
     ready: (mb: string) => `${mb}MB · ready to upload`,
     remove: 'Remove',
@@ -242,6 +244,17 @@ export const en: Dict = {
     },
   },
 
+  legalDetails: {
+    operator: 'Kehillat Kol HaNeshama (a registered non-profit)',
+    amutaNumber: '580111698',
+    address: '1 Asher St., Jerusalem 9347001, Israel',
+    email: 'programs@kkh.org.il',
+    phone: '054-964-7767',
+    accessibilityCoordinator: 'Tahar Dahan',
+    privacyUpdated: '2026-11-25',
+    accessibilityUpdated: '2026-11-25',
+  },
+
   legal: {
     translationNote: 'This English translation is provided for convenience. If it differs from the Hebrew version in any way, the Hebrew version prevails.',
     translationSwitch: 'Read the Hebrew version',
@@ -255,7 +268,7 @@ export const en: Dict = {
         {
           title: 'Who we are',
           body: [
-            `This website and the open call are run by the team of the Medorot 2027 festival, a contemporary art festival in Jerusalem to be held on Lag BaOmer 2027 (the spring holiday traditionally marked with bonfires) at the Kol HaNeshama Congregation in Baka (the “Festival”, “we” or “us”). The Festival is operated by ${L.operator.en}, amuta (non-profit) no. ${L.amutaNumber}, ${L.address.en}, which owns the database and is responsible for the information collected on the website.`,
+            'This website and the open call are run by the team of the Medorot 2027 festival, a contemporary art festival in Jerusalem to be held on Lag BaOmer 2027 (the spring holiday traditionally marked with bonfires) at the Kol HaNeshama Congregation in Baka (the “Festival”, “we” or “us”). The Festival is operated by {operator}, amuta (non-profit) no. {amutaNumber}, {address}, which owns the database and is responsible for the information collected on the website.',
             'This policy explains what information is collected on the website and through the application form, why, to whom it may be disclosed, how long it is kept, and what your rights are. It applies to everyone who browses the website and everyone who submits a proposal.',
             'For any privacy matter, including requests to review, correct or delete your information, contact us {contact}.',
           ],
@@ -445,7 +458,7 @@ export const en: Dict = {
         {
           title: 'Physical accessibility at the festival venue',
           body: [
-            `The festival will take place at the Kol HaNeshama Congregation, ${L.address.en} (in the Baka neighbourhood).`,
+            'The festival will take place at the Kol HaNeshama Congregation, {address} (in the Baka neighbourhood).',
             {
               list: [
                 '**Entrance:** step-free accessible entrance.',
@@ -476,12 +489,17 @@ export const en: Dict = {
         {
           title: 'Accessibility coordinator and reporting a problem',
           body: [
-            `Found a problem, or have a suggestion for improvement? Contact the festival’s accessibility coordinator, ${L.accessibilityCoordinator.en}, {contact}. To help us deal with it quickly, tell us which page it concerns, what the problem is, and which browser or assistive technology you were using.`,
+            'Found a problem, or have a suggestion for improvement? Contact the festival’s accessibility coordinator, {coordinator}, {contact}. To help us deal with it quickly, tell us which page it concerns, what the problem is, and which browser or assistive technology you were using.',
             'We will reply within 5 working days.',
           ],
         },
       ] as LegalSection[],
     },
+  },
+
+  concepts: {
+    privacyTitle: 'Privacy policy',
+    privacyText: '[The draft privacy policy will be added here once the team approves it. The final wording will be approved before submissions open.]',
   },
 
   admin: adminEn,

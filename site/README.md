@@ -15,12 +15,56 @@ application statuses and the default CSV export stay in Hebrew exactly as before
 | Fixed site texts: buttons, labels, form, errors, legal pages | `src/i18n/he.ts` and `src/i18n/en.ts` |
 | Admin texts | `src/i18n/admin.he.ts` and `src/i18n/admin.en.ts` |
 | English of the CMS content (home, about, open call, spaces, support...) | `src/i18n/content.en.ts`, or the admin's English tab |
-| Legal and contact details (operator, amuta no., address, phone, email, accessibility coordinator, "updated" dates) | `LEGAL_DETAILS` in `src/content.ts` |
+| Legal and contact details (operator, amuta no., address, phone, email, accessibility coordinator, "updated" dates) | `legalDetails` in `src/i18n/he.ts` and `en.ts` |
 | Payment page URL and its "תשלום עבור" text | `DONATION_URL` in `src/content.ts` |
 
 `en.ts` is typed against `he.ts` (and `admin.en.ts` against `admin.he.ts`), so adding a Hebrew key without its English
 twin is a TypeScript error (`npx tsc -b`). Functions build texts that contain values (`(n) => \`${n} photos\``). In legal
-texts, `**bold**` marks a bold lead and `{contact}` becomes the email and phone from `LEGAL_DETAILS`.
+texts, `**bold**` marks a bold lead, `{contact}` becomes the email and phone from `legalDetails`, and `{operator}`,
+`{amutaNumber}`, `{address}` and `{coordinator}` become the other `legalDetails`.
+
+Everything in `he.ts` / `en.ts` is only the default: the team can replace any of it from the admin (next section).
+
+## How the team edits any text on the site
+
+Admin → **ניהול תוכן האתר** (content editor). Every part of the editor works the same way: change, **שמירת טיוטה**
+(save draft), **תצוגה מקדימה** (preview, opens the site with the draft), **פרסום באתר** (publish). Visitors see only
+what is published, and every published version stays in the history, so it can be restored.
+
+- **Texts the team writes** (home, about, open call, spaces, support, confirmation, footer, dates, contact details,
+  photos, partners): their own parts of the editor, Hebrew tab plus English tab (see "Editing CMS text in English").
+- **Room names**: **שמות החדרים (התפריט)**. A room's name is its menu label (desktop and phone), the browser tab title,
+  and the big title of the spaces, apply and details rooms. English names go in the English tab of the same part.
+- **Every other text on the site**: **כל הטקסטים באתר** (All site texts). This covers headings, buttons, form labels
+  and hints, the form's option labels, error messages, the details rows ("מנהלי הפסטיבל"), the support texts, the
+  footer, the sculpture's descriptions, page titles and link previews, the built-in privacy policy and accessibility
+  statement paragraph by paragraph, and the legal details and venue accessibility list (group **פרטים משפטיים
+  ונגישות**). Texts are grouped by where they appear and can be searched (Hebrew or English, with or without niqqud;
+  "רק טקסטים ששונו" shows only changed ones). Each row shows the current text as its title and as the grey
+  placeholder of a Hebrew field and an English field. Type to replace; leave a field empty to keep the original;
+  **חזרה לברירת המחדל** clears both languages of that row.
+  - Texts with values in them show the values to keep, e.g. `{n} צילומים`, `{deadline}`, `{mb}`.
+  - Texts that are the same in both languages (e-mail, phone, amuta number, dates) need only the Hebrew field: the
+    English site uses it too unless an English text is written.
+  - Legal dates are written `2026-11-25`.
+  - Option labels change only what is shown: answers are stored by their fixed Hebrew value, as before.
+
+How it is stored: the replacements are part of the same CMS content document (`site_content_versions`, JSON) under
+`ui: { he: { 'form.name': '...' }, en: { ... } }`, keyed by the dotted path of the text in `he.ts` / `en.ts`
+(`form.steps.0`, `form.locations.פטיו`, `legal.accessibility.sections.3.body.1.list.4`). `src/i18n/ui.ts` lists the
+editable texts and applies the published replacements inside the public site's `ContentProvider`, so `useT()` and
+`useLang().t` return the replaced texts. No database migration: versions without `ui` show the code's texts, and a
+replacement for a key that no longer exists is ignored. The server (`api/admin.ts`, shape in
+`src/shared/uiOverrides.ts`) accepts only string texts, at most 2,000 per language and 6,000 characters each.
+
+When changing `he.ts` / `en.ts`: keys are positions for lists, so inserting a paragraph or option in the middle of a
+list moves later replacements to their neighbour. Add at the end, or check **רק טקסטים ששונו** after the change.
+
+Not editable from the admin: the form's "X words over the limit" message (`issues.words`, its grammar depends on the
+numbers), technical values (`toggle.textLang`, `meta.ogLocale`, `legal.dateLocale`, the `brand.fwd` / `brand.back`
+arrows, the hidden bot-trap label `form.honeypot`), the admin's own texts, and the design prototypes' texts
+(`/concepts`, `/c/...`, including `concepts.*`). A whole legal text (adding or removing paragraphs) is replaced in the
+editor's **מדיניות פרטיות** part.
 
 ## Editing CMS text in English
 
@@ -55,7 +99,8 @@ and an English line there.
 
 `npm run dev` (port 5273). `MOCK_API=1` (PowerShell: `$env:MOCK_API='1'; npm run dev`) adds in-memory stand-ins for the
 application endpoints and the admin API (`dev/mockApi.ts`), so the form and the admin screens can be tried without the
-real backend. Checks: `npx tsc -b`, `npx tsc -p tsconfig.api.json`, `npm run lint`, `npm run build`.
+real backend. The mock's `/api/content` serves the version published in the mock admin, so a publish there shows on
+the local site. Checks: `npx tsc -b`, `npx tsc -p tsconfig.api.json`, `npm run lint`, `npm run build`.
 
 ---
 

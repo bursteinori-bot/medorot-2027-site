@@ -1,9 +1,11 @@
 // Builds the English version of the site content from the published (Hebrew) CMS content. Structure, links, images,
 // numbers and switches always come from the published content; only the words are swapped. Rules: src/i18n/content.en.ts.
 import { SEED, type SiteContent } from '../content'
+import type { UiOverrides } from '../shared/uiOverrides'
 import { EN_SEED, MEMORY, type EnContent, type EnOverrides } from './content.en'
 
-export type StoredContent = SiteContent & { en?: EnOverrides }
+// en: English of the CMS texts; ui: replacements for the fixed site texts ("All site texts", src/i18n/ui.ts)
+export type StoredContent = SiteContent & { en?: EnOverrides; ui?: UiOverrides }
 
 const norm = (s: string) => s.replace(/\s+/g, ' ').trim()
 const file = (src: string) => src.split('/').pop() ?? src

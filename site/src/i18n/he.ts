@@ -1,8 +1,9 @@
 // Every fixed Hebrew text of the site (texts the team edits in the CMS live in src/content.ts instead).
 // en.ts has the same shape and is typed against this file, so a key missing in English is a TypeScript error.
-// Conventions: functions build texts with values in them; in legal texts, **bold** marks a bold lead and {contact}
-// is replaced by how to reach the team.
-import { FESTIVAL, LEGAL_DETAILS as L, OPEN_CALL_LEAD, OPEN_CALL_PUNCH, type SectionId } from '../content'
+// Every text here can also be replaced from the admin ("כל הטקסטים באתר", src/i18n/ui.ts); the code is the default.
+// Conventions: functions build texts with values in them; in legal texts, **bold** marks a bold lead, {contact}
+// is replaced by how to reach the team, and {operator} {amutaNumber} {address} {coordinator} by legalDetails below.
+import { FESTIVAL, OPEN_CALL_LEAD, OPEN_CALL_PUNCH, YEAR, type SectionId } from '../content'
 import { DISCIPLINES, HE_ISSUES, IDENTITIES, LOCATIONS } from '../shared/application'
 import { adminHe } from './admin.he'
 
@@ -30,6 +31,7 @@ export const he = {
 
   brand: {
     festival: FESTIVAL,
+    year: YEAR,
     openCallLead: OPEN_CALL_LEAD,
     openCallPunch: OPEN_CALL_PUNCH,
     logoAlt: 'פסטיבל מדורות · Festival Medorot',
@@ -59,13 +61,11 @@ export const he = {
     spaces: 'המרחבים',
     toSpacePhotos: 'לצילומי המרחבים',
     apply: 'להגשת הצעה',
-    spacesTitle: 'מרחבי הפסטיבל',
+    // the big titles of the spaces, apply and details rooms are the room names from the CMS (nav)
     enlarge: (alt: string) => `הגדלה: ${alt}`,
     photosHint: (n: number) => `${n} צילומים · גללו הצידה או לחצו להגדלה`,
-    applyTitle: 'הגשת הצעה',
     applyIntro: 'ארבעה שלבים קצרים, ואפשר לחזור אחורה בכל רגע בלי לאבד את מה שכתבתם.',
     loadingForm: 'טוענים את הטופס…',
-    detailsTitle: 'פרטים',
   },
 
   mobileNav: { open: 'ניווט באתר +', close: 'סגירת הניווט ×' },
@@ -158,8 +158,10 @@ export const he = {
     stage: 'באיזה שלב נמצא הפרויקט?',
     portfolio: 'תיק עבודות',
     portfolioHint: 'קישור לתיק העבודות או לעבודות קודמות שלכם.ן. תיק עבודות בקובץ PDF? העלו אותו לדרייב או לדרופבוקס, ופתחו בו שיתוף לכל מי שיש לו את הקישור.',
+    portfolioPlaceholder: 'https://',
     social: 'אינסטגרם / אתר האמן.ית',
     socialHint: 'קישור לעמוד האינסטגרם או לאתר שלכם.ן. לא חובה.',
+    socialPlaceholder: 'https://instagram.com/...',
     visuals: 'חומרים ויזואליים על הפרויקט המוצע',
     visualsHint: 'אם מדובר ביצירה קיימת או בפרויקט בתהליך פיתוח, ניתן לצרף תמונות, סרטונים ותיעוד. אם מדובר ברעיון ראשוני, ניתן לצרף לוח השראה, רפרנסים, סקיצות, שרטוטים או הדמיות.',
     uploadRules: (imgMb: number, mb: number, files: number) =>
@@ -180,7 +182,8 @@ export const he = {
     retry: 'ניסיון נוסף',
     submit: 'שליחת ההצעה',
     errorCount: (n: number) => `יש ${n} שדות לתיקון`,
-    sendingNote: (withFiles: boolean) => `שולחים את ההצעה${withFiles ? ' ומעלים את הקבצים' : ''}. לא לסגור את הדף.`,
+    sendingNote: 'שולחים את ההצעה. לא לסגור את הדף.',
+    sendingNoteFiles: 'שולחים את ההצעה ומעלים את הקבצים. לא לסגור את הדף.',
     uploaded: (pct: number) => `${pct}% הועלה`,
     ready: (mb: string) => `${mb}MB · מוכן להעלאה`,
     remove: 'הסרה',
@@ -222,6 +225,20 @@ export const he = {
     },
   },
 
+  // The festival's legal and contact details, used by the privacy policy and the accessibility statement
+  // (src/site/Legal.tsx). The same in both languages except names and the address: a Hebrew edit of the e-mail,
+  // phone, number or dates in the admin covers the English site too. Dates: YYYY-MM-DD.
+  legalDetails: {
+    operator: 'קהילת כל הנשמה (ע״ר)',
+    amutaNumber: '580111698',
+    address: 'רחוב אשר 1, ירושלים 9347001',
+    email: 'programs@kkh.org.il',
+    phone: '054-964-7767',
+    accessibilityCoordinator: 'טהר דהאן',
+    privacyUpdated: '2026-11-25',
+    accessibilityUpdated: '2026-11-25',
+  },
+
   legal: {
     translationNote: '',
     translationSwitch: '',
@@ -235,7 +252,7 @@ export const he = {
         {
           title: 'מי אנחנו',
           body: [
-            `האתר והקול הקורא מופעלים על ידי צוות פסטיבל מְדּוֹרוֹת 2027, פסטיבל לאמנות עכשווית בירושלים שיתקיים בל״ג בעומר 2027 בקהילת כל הנשמה, בקעה (להלן: ״הפסטיבל״ או ״אנחנו״). הפסטיבל מופעל על ידי ${L.operator.he}, עמותה מס׳ ${L.amutaNumber}, ${L.address.he}, שהיא בעלת מאגר המידע והאחראית על המידע שנאסף באתר.`,
+            'האתר והקול הקורא מופעלים על ידי צוות פסטיבל מְדּוֹרוֹת 2027, פסטיבל לאמנות עכשווית בירושלים שיתקיים בל״ג בעומר 2027 בקהילת כל הנשמה, בקעה (להלן: ״הפסטיבל״ או ״אנחנו״). הפסטיבל מופעל על ידי {operator}, עמותה מס׳ {amutaNumber}, {address}, שהיא בעלת מאגר המידע והאחראית על המידע שנאסף באתר.',
             'מדיניות זו מסבירה איזה מידע נאסף באתר ובטופס ההגשה, למה, למי הוא עשוי להימסר, כמה זמן הוא נשמר ומה הזכויות שלכם.ן. היא חלה על כל מי שגולשים.ות באתר ועל כל מי שמגישים.ות הצעה.',
             'ליצירת קשר בכל נושא פרטיות, ובכלל זה בקשות לעיון במידע, לתיקונו או למחיקתו: {contact}.',
           ],
@@ -425,7 +442,7 @@ export const he = {
         {
           title: 'נגישות פיזית במקום הפסטיבל',
           body: [
-            `הפסטיבל יתקיים בקהילת כל הנשמה, ${L.address.he} (שכונת בקעה).`,
+            'הפסטיבל יתקיים בקהילת כל הנשמה, {address} (שכונת בקעה).',
             {
               list: [
                 '**כניסה:** כניסה נגישה, ללא מדרגות.',
@@ -456,12 +473,18 @@ export const he = {
         {
           title: 'רכז.ת הנגישות ודיווח על בעיה',
           body: [
-            `נתקלתם.ן בבעיה, או שיש לכם.ן הצעה לשיפור? פנו לרכז.ת הנגישות של הפסטיבל, ${L.accessibilityCoordinator.he}, {contact}. כדי שנוכל לטפל מהר, כתבו באיזה עמוד מדובר, מה הבעיה, ובאיזה דפדפן או טכנולוגיה מסייעת השתמשתם.ן.`,
+            'נתקלתם.ן בבעיה, או שיש לכם.ן הצעה לשיפור? פנו לרכז.ת הנגישות של הפסטיבל, {coordinator}, {contact}. כדי שנוכל לטפל מהר, כתבו באיזה עמוד מדובר, מה הבעיה, ובאיזה דפדפן או טכנולוגיה מסייעת השתמשתם.ן.',
             'נשיב תוך 5 ימי עבודה.',
           ],
         },
       ] as LegalSection[],
     },
+  },
+
+  // the design prototypes only (/concepts, /c/...): placeholder where their privacy section sits. Not offered in the admin.
+  concepts: {
+    privacyTitle: 'מדיניות פרטיות',
+    privacyText: '[טיוטת מדיניות הפרטיות תתווסף כאן לאחר אישור הצוות. נוסח סופי יאושר לפני הפתיחה להגשות.]',
   },
 
   admin: adminHe,

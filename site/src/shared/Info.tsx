@@ -42,11 +42,13 @@ export function Partners({ invert = false, className = '' }: { invert?: boolean;
   )
 }
 
+// the design prototypes' privacy placeholder (/c/...; texts: `concepts` in src/i18n/he.ts)
 export function PrivacyNote() {
+  const t = useT().concepts
   return (
     <section id="privacy" aria-labelledby="privacy-t" className="text-base">
-      <h3 id="privacy-t" className="font-bold text-lg mb-1">מדיניות פרטיות</h3>
-      <p className="opacity-80">[טיוטת מדיניות הפרטיות תתווסף כאן לאחר אישור הצוות. נוסח סופי יאושר לפני הפתיחה להגשות.]</p>
+      <h3 id="privacy-t" className="font-bold text-lg mb-1">{t.privacyTitle}</h3>
+      <p className="opacity-80">{t.privacyText}</p>
     </section>
   )
 }

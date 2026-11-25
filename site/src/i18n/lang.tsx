@@ -1,7 +1,9 @@
-import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useState, type ReactNode } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import type { UiOverrides } from '../shared/uiOverrides'
 import { en } from './en'
 import { he, type Dict } from './he'
+import { withUi } from './ui'
 
 // Site language. Hebrew is the default; English is opt-in through the toggle or a shared ?lang=en link, and is
 // remembered in this browser (localStorage). The browser's own language is never used to guess.
@@ -91,4 +93,13 @@ export function LangProvider({ children }: { children: ReactNode }) {
   const withLang = useCallback((path: string) => (lang === 'en' ? `${path}${path.includes('?') ? '&' : '?'}lang=en` : path), [lang])
 
   return <LangCtx.Provider value={{ lang, dir, t: DICTS[lang], setLang, withLang }}>{children}</LangCtx.Provider>
+}
+
+// The public site's texts with the team's published replacements ("All site texts" in the admin, src/i18n/ui.ts).
+// Used by the ContentProvider; everything below it reads the replaced texts through useT() / useLang().t.
+export function UiTextProvider({ ui, children }: { ui: UiOverrides | undefined; children: ReactNode }) {
+  const parent = useContext(LangCtx)
+  const t = useMemo(() => withUi(parent.t, ui, parent.lang), [parent.t, ui, parent.lang])
+  const value = useMemo(() => (t === parent.t ? parent : { ...parent, t }), [t, parent])
+  return <LangCtx.Provider value={value}>{children}</LangCtx.Provider>
 }

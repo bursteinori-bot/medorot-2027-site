@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { DONATION_COMMENT, SEED, type SiteContent } from '../content'
-import { useLang } from '../i18n/lang'
+import { UiTextProvider, useLang } from '../i18n/lang'
 import { localizeContent, type StoredContent } from '../i18n/localize'
+import { cleanUi } from '../shared/uiOverrides'
 
 // One source of truth for public content. Pages read it through useContent(); the provider swaps the seed for the
 // published CMS version (GET /api/content). With ?preview=<draft id> a signed-in team member sees that draft instead.
@@ -21,6 +22,10 @@ export function withSeed(published: Partial<StoredContent>): StoredContent {
     const base = (SEED as Record<string, unknown>)[k]
     out[k] = base && typeof base === 'object' && !Array.isArray(base) && v && typeof v === 'object' && !Array.isArray(v) ? { ...base, ...v } : v
   }
+  // the fixed-text replacements: strings only (a version without `ui` has none)
+  const ui = cleanUi(out.ui)
+  if (ui) out.ui = ui
+  else delete out.ui
   return migrateLegacy(out as StoredContent)
 }
 
@@ -44,7 +49,7 @@ function withComment(url: string | null): string | null {
 }
 
 export function ContentProvider({ children }: { children: ReactNode }) {
-  const { lang, t } = useLang()
+  const { lang } = useLang()
   const [content, setContent] = useState<StoredContent>(SEED)
   const [preview] = useState(() => new URLSearchParams(window.location.search).get('preview'))
   const [previewError, setPreviewError] = useState('')
@@ -67,13 +72,20 @@ export function ContentProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ({ source: content, shown: lang === 'en' ? localizeContent(content) : content }), [content, lang])
   return (
     <Ctx.Provider value={value}>
-      {preview && (
-        <div role="status" className="fixed bottom-3 inset-x-3 z-[150] mx-auto max-w-xl rounded-lg bg-black text-white px-4 py-3 text-base shadow-xl flex items-center gap-3">
-          <span className="font-bold text-[#fee801]">{t.preview.title}</span>
-          <span className="flex-1">{previewError ? (lang === 'he' && previewError.trim() ? previewError : t.preview.failed) : t.preview.note}</span>
-        </div>
-      )}
-      {children}
+      <UiTextProvider ui={content.ui}>
+        {preview && <PreviewBanner error={previewError} />}
+        {children}
+      </UiTextProvider>
     </Ctx.Provider>
+  )
+}
+
+function PreviewBanner({ error }: { error: string }) {
+  const { lang, t } = useLang()
+  return (
+    <div role="status" className="fixed bottom-3 inset-x-3 z-[150] mx-auto max-w-xl rounded-lg bg-black text-white px-4 py-3 text-base shadow-xl flex items-center gap-3">
+      <span className="font-bold text-[#fee801]">{t.preview.title}</span>
+      <span className="flex-1">{error ? (lang === 'he' && error.trim() ? error : t.preview.failed) : t.preview.note}</span>
+    </div>
   )
 }

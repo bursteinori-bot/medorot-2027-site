@@ -98,7 +98,7 @@ export default function Site({ page }: { page?: 'privacy' | 'accessibility' }) {
       <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[var(--paper)]">
         <Link to={withLang('/')} aria-label={t.site.homeLink}><Logo className="w-40" /></Link>
         <div className="flex items-center gap-3">
-          <span className="text-sm tabular-nums">{c.year}</span>
+          <span className="text-sm tabular-nums">{t.brand.year}</span>
           <LangToggle className="size-11 border-2 border-black text-base active:bg-black active:text-[color:var(--paper)]" />
         </div>
       </div>
@@ -185,6 +185,8 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
   const { t, withLang } = useLang()
   const s = t.site
   const fwd = t.brand.fwd
+  // a room's big title is its name in the menu (CMS nav), so renaming a room renames its page too
+  const room = (r: SectionId) => c.nav.find((n) => n.id === r)?.label ?? ''
   const [box, setBox] = useState<{ s: number; i: number } | null>(null)
   switch (id) {
     case 'home':
@@ -272,7 +274,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
     case 'spaces':
       return (
         <div>
-          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{s.spacesTitle}</PanelTitle>
+          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{room('spaces')}</PanelTitle>
           <p className="mt-4 text-xl md:text-2xl max-w-[44ch]">{c.openCall.spaces}</p>
           <div className="mt-10 space-y-16">
             {c.spaces.map((sp, si) => (
@@ -301,7 +303,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
     case 'apply':
       return (
         <div>
-          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{s.applyTitle}</PanelTitle>
+          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{room('apply')}</PanelTitle>
           <p className="mt-3 mb-10 text-xl md:text-2xl max-w-[44ch]">{c.openCall.stagesNote} {s.applyIntro}</p>
           <Suspense fallback={<p className="text-xl" role="status">{s.loadingForm}</p>}>
             <ApplicationForm mode="live" privacyHref={withLang('/privacy')} />
@@ -320,7 +322,7 @@ function Panel({ id, go }: { id: SectionId; go: (s: SectionId) => void }) {
     case 'details':
       return (
         <div>
-          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{s.detailsTitle}</PanelTitle>
+          <PanelTitle className="text-[clamp(3.4rem,8vw,7rem)] font-black leading-none">{room('details')}</PanelTitle>
           <InfoList className="mt-8 border-t-2 border-black" row="border-b-2 border-black py-4" />
           <div className="mt-12 p-6 md:p-8 bg-black text-[color:var(--paper)]">
             <p className="text-3xl md:text-4xl font-bold nikud">{c.finalCta.text}</p>

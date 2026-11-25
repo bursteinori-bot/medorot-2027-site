@@ -3,6 +3,7 @@
 // send either), on top of the SameSite session cookie.
 import { z } from 'zod'
 import { SEED } from '../src/content.js'
+import { uiOverridesSchema } from '../src/shared/uiOverrides.js'
 import { type Admin, type Role, canPublish, currentAdmin, endSession, hasRole, hashPassword, newToken, startSession, verifyPassword } from './_lib/auth.js'
 import { fail, ipHash, isUuid, json, sql } from './_lib/server.js'
 
@@ -246,6 +247,8 @@ const contentState = need(['admin', 'editor'], async ({ url }) => {
 const contentSave = need(['admin', 'editor'], async ({ admin, body }) => {
   const d = parse(z.object({ id: z.string().uuid().nullable(), content: z.record(z.unknown()), note: z.string().max(300).optional() }), body)
   if (!d) return fail(400, 'התוכן לא תקין.', undefined, { code: 'invalidContent' })
+  // "All site texts": optional; strings only, within UI_LIMITS (src/shared/uiOverrides.ts)
+  if (d.content.ui !== undefined && !uiOverridesSchema.safeParse(d.content.ui).success) return fail(400, 'התוכן לא תקין.', undefined, { code: 'invalidContent' })
   if (JSON.stringify(d.content).length > 1_000_000) return fail(413, 'התוכן גדול מדי.', undefined, { code: 'contentTooLarge' })
   const db = sql()
   if (d.id) {

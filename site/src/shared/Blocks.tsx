@@ -1,6 +1,5 @@
 import { motion } from 'motion/react'
 import type { ReactNode } from 'react'
-import { YEAR } from '../content'
 import { useT } from '../i18n/lang'
 
 // The open-call headline, always complete: "קוֹל קוֹרֵא:" + "פַּנּוּ דֶּרֶךְ..." (never shortened).
@@ -22,7 +21,7 @@ export function FestivalYear({ className = '', year = '' }: { className?: string
   const t = useT().brand
   return (
     <span className={`nikud ${className}`}>
-      {t.festival} <span className={`tabular-nums ${year}`}>{YEAR}</span>
+      {t.festival} <span className={`tabular-nums ${year}`}>{t.year}</span>
     </span>
   )
 }

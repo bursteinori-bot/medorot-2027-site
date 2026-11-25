@@ -1,10 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { SEED, type SiteContent } from '../content'
 import { adminHe, type AdminDict } from '../i18n/admin.he'
 import type { EnOverrides } from '../i18n/content.en'
 import { localizeContent, type StoredContent } from '../i18n/localize'
+import { tidyUi } from '../i18n/ui'
+import { cleanUi } from '../shared/uiOverrides'
 import { useMe } from './AdminApp'
 import { apiGet, apiPost, uploadMedia, useAdmin } from './api'
+import { TextsEditor } from './TextsEditor'
 import { Button, Card, Field, Notice, PageTitle, Spinner, inputCls } from './ui'
 
 // "ניהול תוכן האתר": every public text, date, link and image, edited as drafts, previewed, then published.
@@ -120,6 +123,8 @@ const buildSections = (t: CT): Section[] => {
         { path: ['legal', 'accessibility'], label: f.accessibility, kind: 'legal', en: true },
       ],
     },
+    // every fixed text of the site, both languages side by side (TextsEditor.tsx; stored under `ui`)
+    { id: 'texts', fields: [] },
   ]
 }
 
@@ -188,7 +193,7 @@ export default function ContentEditor() {
   const load = () =>
     apiGet<{ current: { id: string | null; content: StoredContent; status: string }; versions: Version[] }>('content').then((d) => {
       // fill fields added to the seed after this version was saved (the saved `en` overrides come along as they are)
-      setContent({ ...SEED, ...d.current.content, legal: { ...SEED.legal, ...(d.current.content.legal ?? {}) } })
+      setContent({ ...SEED, ...d.current.content, legal: { ...SEED.legal, ...(d.current.content.legal ?? {}) }, ui: cleanUi(d.current.content.ui) })
       setDraftId(d.current.status === 'draft' ? d.current.id : null)
       setStatus(d.current.status)
       setVersions(d.versions)
@@ -205,6 +210,19 @@ export default function ContentEditor() {
   }, [dirty])
   // what the English site shows right now, for the placeholders of the English tab
   const localized = useMemo(() => (content && edLang === 'en' ? localizeContent(content) : null), [content, edLang])
+  // "All site texts": one replacement (or none) per language and text key
+  const putUi = useCallback((l: 'he' | 'en', key: string, v: string | undefined) => {
+    setContent((c) => {
+      if (!c) return c
+      const texts = { ...(c.ui?.[l] ?? {}) }
+      if (v === undefined) delete texts[key]
+      else texts[key] = v
+      const ui = { ...c.ui, [l]: texts }
+      if (!Object.keys(texts).length) delete ui[l]
+      return { ...c, ui: ui.he || ui.en ? ui : undefined }
+    })
+    setDirty(true)
+  }, [])
 
   if (!content) return msg ? <Notice kind="error">{msg.text}</Notice> : <Spinner />
 
@@ -217,7 +235,7 @@ export default function ContentEditor() {
     setDirty(true)
   }
   const save = async () => {
-    const r = await apiPost<{ id: string }>('content-save', { id: draftId, content: { ...content, en: tidy(content.en) } })
+    const r = await apiPost<{ id: string }>('content-save', { id: draftId, content: { ...content, en: tidy(content.en), ui: tidyUi(content.ui) } })
     setDraftId(r.id)
     setStatus('draft')
     setDirty(false)
@@ -301,15 +319,19 @@ export default function ContentEditor() {
             </button>
           ))}
         </nav>
-        <Card className="space-y-6 min-w-0">
+        <Card className="space-y-6 min-w-0 max-sm:p-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-2xl font-bold">{secText.title}</h2>
-            <div role="group" aria-label={t.langTabs} className="flex gap-1 bg-[#f7f4ea] border border-black/15 rounded-lg p-1">
-              {tab('he', t.tabHe)}
-              {tab('en', t.tabEn)}
-            </div>
+            {sec.id !== 'texts' && (
+              <div role="group" aria-label={t.langTabs} className="flex gap-1 bg-[#f7f4ea] border border-black/15 rounded-lg p-1">
+                {tab('he', t.tabHe)}
+                {tab('en', t.tabEn)}
+              </div>
+            )}
           </div>
-          {edLang === 'he' ? (
+          {sec.id === 'texts' ? (
+            <TextsEditor ui={content.ui} put={putUi} />
+          ) : edLang === 'he' ? (
             <>
               {secText.note && <Notice>{secText.note}</Notice>}
               {sec.fields.map((f) => <Editor key={f.path.join('.')} def={f} value={get(content, f.path)} onChange={(v) => update(f.path, v)} />)}

@@ -60,11 +60,13 @@ export function ApplicationForm({ compact = false, mode = 'demo', privacyHref }:
   const uid = useId()
 
   const msg = (token: string) => (token.startsWith('raw:') ? (lang === 'he' ? token.slice(4) : dict.issues.check) : formatIssue(token, dict.issues))
+  // by the error's code, so the texts follow the language and the team's edits ("All site texts"); a Hebrew message
+  // without a known code is the server's own text, shown as it is
   const describe = (e: SubmitError) => {
-    if (lang === 'he') return e.message
     const server = dict.errors.server as Record<string, string | ((d: string) => string)>
     const local = dict.errors as unknown as Record<string, string | ((d: string) => string)>
-    const m = (e.code && (server[e.code] ?? (e.code !== 'server' ? local[e.code] : undefined))) || dict.errors.generic
+    const known = e.code ? (server[e.code] ?? (e.code !== 'server' ? local[e.code] : undefined)) : undefined
+    const m = known || (lang === 'he' ? e.message : dict.errors.generic)
     return typeof m === 'function' ? m(e.detail ?? '') : m
   }
 
@@ -281,10 +283,10 @@ export function ApplicationForm({ compact = false, mode = 'demo', privacyHref }:
           {step === 2 && (
             <>
               <Field label={t.portfolio} req err={err('portfolio')} id={f('portfolio').id} hint={t.portfolioHint}>
-                <input {...f('portfolio')} className={field} dir="ltr" inputMode="url" placeholder="https://" value={d.portfolio} onChange={(e) => set('portfolio', e.target.value)} />
+                <input {...f('portfolio')} className={field} dir="ltr" inputMode="url" placeholder={t.portfolioPlaceholder} value={d.portfolio} onChange={(e) => set('portfolio', e.target.value)} />
               </Field>
               <Field label={t.social} err={err('social')} id={f('social').id} hint={t.socialHint}>
-                <input {...f('social')} className={field} dir="ltr" inputMode="url" placeholder="https://instagram.com/..." value={d.social} onChange={(e) => set('social', e.target.value)} />
+                <input {...f('social')} className={field} dir="ltr" inputMode="url" placeholder={t.socialPlaceholder} value={d.social} onChange={(e) => set('social', e.target.value)} />
               </Field>
               <div>
                 <p className="text-xl font-bold mb-1">{t.visuals}</p>
@@ -339,7 +341,7 @@ export function ApplicationForm({ compact = false, mode = 'demo', privacyHref }:
           {step < 3 ? `${t.next} ${dict.brand.fwd}` : sending ? t.sending : sendError ? t.retry : t.submit}
         </button>
         {errorCount > 0 && !sendError && <span className="text-[color:var(--accent-2)] font-bold text-base" role="alert">{t.errorCount(errorCount)}</span>}
-        {sending && <span className="text-base" role="status">{t.sendingNote(files.length > 0)}</span>}
+        {sending && <span className="text-base" role="status">{files.length > 0 ? t.sendingNoteFiles : t.sendingNote}</span>}
       </div>
     </div>
   )

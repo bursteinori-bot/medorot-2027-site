@@ -167,18 +167,9 @@ export const CONFIRMATION = {
   ],
 }
 
-// The festival's legal and contact details for the privacy policy and the accessibility statement (src/site/Legal.tsx
-// and the legal texts in src/i18n/he.ts / en.ts read them from here). Kept outside the CMS seed on purpose.
-export const LEGAL_DETAILS = {
-  operator: { he: 'קהילת כל הנשמה (ע״ר)', en: 'Kehillat Kol HaNeshama (a registered non-profit)' },
-  amutaNumber: '580111698',
-  address: { he: 'רחוב אשר 1, ירושלים 9347001', en: '1 Asher St., Jerusalem 9347001, Israel' },
-  email: 'programs@kkh.org.il',
-  phone: '054-964-7767',
-  phoneHref: 'tel:+972549647767',
-  accessibilityCoordinator: { he: 'טהר דהאן', en: 'Tahar Dahan' },
-  updated: { privacy: '2026-11-25', accessibility: '2026-11-25' },
-}
+// The festival's legal and contact details (operator, amuta no., address, e-mail, phone, accessibility coordinator,
+// "updated" dates) moved to `legalDetails` in src/i18n/he.ts / en.ts, so the team can edit them in the admin
+// ("כל הטקסטים באתר" ← "פרטים משפטיים ונגישות").
 
 export const PRIVACY_DRAFT = true // privacy policy + accessibility statement are drafts until the team approves them
 
