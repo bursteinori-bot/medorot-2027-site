@@ -20,3 +20,6 @@ tools/venv/
 *.8bpb
 *.ai
 audit/smartobjects/
+
+# local-only security notes (this repository is public)
+HANDOFF.private.md
