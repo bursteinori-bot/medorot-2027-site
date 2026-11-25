@@ -235,7 +235,7 @@ export const adminEn: AdminDict = {
     noData: 'No data yet.',
     unknown: 'Unknown',
     pages: {
-      home: 'Home', about: 'About', 'open-call': 'Open Call', spaces: 'Festival Spaces', apply: 'Apply', support: 'Partners & Support', details: 'Details', privacy: 'Privacy policy', accessibility: 'Accessibility statement',
+      home: 'Home', about: 'About', 'open-call': 'Open Call', spaces: 'Festival Spaces', apply: 'Apply', support: 'Support the Festival', details: 'Details', privacy: 'Privacy policy', accessibility: 'Accessibility statement',
     },
     devices: { mobile: 'Phone', tablet: 'Tablet', desktop: 'Computer' },
     eventNames: {
@@ -312,7 +312,7 @@ export const adminEn: AdminDict = {
       'open-call': { title: 'The open call', note: '' },
       spaces: { title: 'Festival spaces', note: 'You can replace, add and reorder photos. Every photo needs alt text that describes what it shows.' },
       apply: { title: 'Application details', note: 'The form’s required fields and its checks are fixed and can’t be edited here.' },
-      support: { title: 'Partners & support', note: '' },
+      support: { title: 'Support the festival', note: '' },
       nav: { title: 'Navigation and menu', note: '' },
       footer: { title: 'Footer', note: '' },
       privacy: { title: 'Privacy policy', note: 'While the field is empty, the website shows the built-in draft (marked as a draft). Separate paragraphs with an empty line. A line starting with “## ” is a heading.' },

@@ -57,7 +57,7 @@ export const EN_SEED: EnContent = {
     'open-call': 'Open Call',
     spaces: 'Festival Spaces',
     apply: 'Apply',
-    support: 'Partners & Support',
+    support: 'Support the Festival',
     details: 'Details',
   },
   navHint: 'Tap a topic to move around the site',

@@ -230,7 +230,7 @@ export const adminHe = {
     noData: 'עדיין אין נתונים.',
     unknown: 'לא ידוע',
     pages: {
-      home: 'ראשי', about: 'על הפסטיבל', 'open-call': 'הקול הקורא', spaces: 'מרחבי הפסטיבל', apply: 'הגשת הצעה', support: 'שותפות ותמיכה', details: 'פרטים', privacy: 'מדיניות פרטיות', accessibility: 'הצהרת נגישות',
+      home: 'ראשי', about: 'על הפסטיבל', 'open-call': 'הקול הקורא', spaces: 'מרחבי הפסטיבל', apply: 'הגשת הצעה', support: 'לתמיכה בפסטיבל', details: 'פרטים', privacy: 'מדיניות פרטיות', accessibility: 'הצהרת נגישות',
     } as Record<string, string>,
     devices: { mobile: 'טלפון', tablet: 'טאבלט', desktop: 'מחשב' } as Record<string, string>,
     eventNames: {
@@ -309,7 +309,7 @@ export const adminHe = {
       'open-call': { title: 'הקול הקורא', note: '' },
       spaces: { title: 'מרחבי הפסטיבל', note: 'אפשר להחליף, להוסיף ולסדר תמונות. כל תמונה צריכה טקסט חלופי שמתאר מה רואים בה.' },
       apply: { title: 'פרטי ההגשה', note: 'שדות החובה של הטופס והבדיקות שלו קבועים ואינם ניתנים לעריכה כאן.' },
-      support: { title: 'שותפות ותמיכה', note: '' },
+      support: { title: 'לתמיכה בפסטיבל', note: '' },
       nav: { title: 'ניווט ותפריט', note: '' },
       footer: { title: 'פוטר', note: '' },
       privacy: { title: 'מדיניות פרטיות', note: 'כל עוד השדה ריק, באתר מוצגת הטיוטה המובנית (מסומנת כטיוטה). פסקאות מופרדות בשורה ריקה. שורה שמתחילה ב-"## " היא כותרת.' },

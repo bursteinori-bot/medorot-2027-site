@@ -39,7 +39,7 @@ export const NAV: { id: SectionId; label: string }[] = [
   { id: 'open-call', label: 'הקול הקורא' },
   { id: 'spaces', label: 'מרחבי הפסטיבל' },
   { id: 'apply', label: 'הגשת הצעה' },
-  { id: 'support', label: 'שותפות ותמיכה' },
+  { id: 'support', label: 'לתמיכה בפסטיבל' },
   { id: 'details', label: 'פרטים' },
 ]
 

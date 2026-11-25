@@ -70,7 +70,7 @@ export const en: Dict = {
     whatsapp: 'WhatsApp',
     contact: 'Contact',
     partners: 'Partners',
-    creators: 'Festival creators',
+    creators: 'Festival directors',
     creatorsNames: 'Naveh Moshon and Tahar Dahan',
   },
 
