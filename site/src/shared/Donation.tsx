@@ -2,19 +2,24 @@ import { motion } from 'motion/react'
 import { useState } from 'react'
 import { track } from '../analytics'
 import { useContent } from '../cms/content'
-import { useT } from '../i18n/lang'
+import { useLang, useT } from '../i18n/lang'
 
 // The live support form: Kol HaNeshama's secure iCredit donation page, embedded in the site (iCredit supports iframe
 // display; the page sends no frame-ancestors/X-Frame-Options). "תשלום עבור" arrives pre-filled through ?Comments=.
 // allow="payment" lets Apple Pay / Google Pay run inside the frame. A plain link opens the same page in its own window
 // for browsers that block the frame (e.g. strict third-party-cookie settings).
+// The English site embeds Kol HaNeshama's English iCredit page instead; there "Custom3" pre-fills its "Purpose" field.
+const DONATION_PAGE_EN = 'https://icredit.rivhit.co.il/payment/PaymentFullPage.aspx?GroupId=aa501c4d-1f7b-4eaf-8ad8-01833a8880cf'
+const DONATION_URL_EN = `${DONATION_PAGE_EN}&Custom3=${encodeURIComponent('Support for Medorot Festival 2027')}`
+
 export function DonationFrame() {
   const { settings: SETTINGS } = useContent()
+  const { lang } = useLang()
   const t = useT().support
-  const url = SETTINGS.donationUrl!
+  const url = lang === 'en' ? DONATION_URL_EN : SETTINGS.donationUrl!
   return (
     <div className="mt-10">
-      {t.frameLangNote && <p className="mb-3 text-base">{t.frameLangNote}</p>}
+      {lang !== 'en' && t.frameLangNote && <p className="mb-3 text-base">{t.frameLangNote}</p>}
       <div className="border-2 border-black bg-white">
         <iframe
           src={url}
@@ -23,7 +28,7 @@ export function DonationFrame() {
           loading="lazy"
           referrerPolicy="strict-origin-when-cross-origin"
           onLoad={() => track('donation_frame_loaded')}
-          className="block w-full h-[1620px] md:h-[1520px] border-0 bg-white"
+          className={`block w-full border-0 bg-white ${lang === 'en' ? 'h-[2150px] md:h-[1950px]' : 'h-[1620px] md:h-[1520px]'}`}
         />
       </div>
       <p id="donation-trust" className="mt-4 text-base opacity-80">
