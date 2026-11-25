@@ -35,7 +35,8 @@ function migrateLegacy(c: StoredContent): StoredContent {
   support.paragraphs = support.paragraphs.map((p, i) => (OLD_WORDING.test(p) ? (SEED.support.paragraphs[i] ?? p.replace(/תרומה/g, 'תמיכה בפסטיבל')) : p))
   const lines = c.confirmation.lines.map((l, i) => (/לוח הזמנים שיפורסם/.test(l) ? (SEED.confirmation.lines[i] ?? l) : l))
   const settings = { ...c.settings, donationUrl: withComment(c.settings.donationUrl) }
-  return { ...c, support, confirmation: { ...c.confirmation, lines }, settings }
+  const nav = c.nav.map((n) => (n.id === 'support' && /שותפות ותמיכה|תרומ/.test(n.label) ? (SEED.nav.find((s) => s.id === 'support') ?? n) : n))
+  return { ...c, nav, support, confirmation: { ...c.confirmation, lines }, settings }
 }
 function withComment(url: string | null): string | null {
   if (!url || !/icredit\.rivhit\.co\.il\/payment\/DonationPage\.aspx/i.test(url) || /[?&]Comments=/i.test(url)) return url

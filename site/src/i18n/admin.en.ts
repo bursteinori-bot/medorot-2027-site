@@ -313,7 +313,7 @@ export const adminEn: AdminDict = {
       spaces: { title: 'Festival spaces', note: 'You can replace, add and reorder photos. Every photo needs alt text that describes what it shows.' },
       apply: { title: 'Application details', note: 'The form’s required fields and its checks are fixed and can’t be edited here.' },
       support: { title: 'Support the festival', note: '' },
-      nav: { title: 'Navigation and menu', note: '' },
+      nav: { title: 'Room names (menu)', note: 'Rename any room of the site here. The name appears in the menu and as the page title.' },
       footer: { title: 'Footer', note: '' },
       privacy: { title: 'Privacy policy', note: 'While the field is empty, the website shows the built-in draft (marked as a draft). Separate paragraphs with an empty line. A line starting with “## ” is a heading.' },
     },
